@@ -108,9 +108,78 @@ main {
 }
 
 .image-entry {
-    max-width: 80%;
+    max-width: 100%;
     text-align: center;
 }
+
+/* Carousel */
+
+/* Carousel Container */
+.carousel-container {
+    position: relative;
+    width: 80%;
+    margin: 40px auto; /* centre horizontally */
+    overflow: hidden;  /* hide slides that are off-screen */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* The 'track' that holds all slides side by side */
+.carousel-track {
+    display: flex;             /* place slides in a row */
+    transition: transform 0.5s ease-in-out; 
+    /* We'll shift this left/right with JavaScript */
+}
+
+/* Each Slide */
+.carousel-slide {
+    min-width: 100%;           /* each slide takes full container width */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Example styling for tutor info */
+.tutor-info {
+    text-align: center;
+}
+
+.tutor-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+/* Navigation Buttons */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 31, 63, 0.7); /* Semi-transparent navy */
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+.carousel-button:hover {
+    background-color: rgba(0, 31, 63, 0.9);
+}
+
 
 /* Footer Styling */
 footer {

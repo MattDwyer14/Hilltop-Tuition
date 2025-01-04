@@ -1,23 +1,38 @@
 {% extends 'home/base.html' %}
 {% load static %}
 {% block content %}
+
 <div class="home-text-container">
     <h1>HomePage Title</h1>
-    <div class="content-gallery">
-        {% for item in combined_content %}
-            {% if item.type == 'text' %}
-                <div class="text-entry">
-                    <h1>{{ item.content.title|linebreaksbr }}</h1>
-                    <article>
-                        <p>{{ item.content.body|linebreaksbr }}</p>
-                    </article>
-                </div>
-            {% elif item.type == 'image' %}
-                <div class="image-entry">
-                    <img src="{% static item.content %}" alt="Image">
-                </div>
-            {% endif %}
+</div>
+<div class="image-entry">
+    <!-- Your existing content, images, etc. -->
+</div>
+
+<!-- Carousel Container -->
+<div class="carousel-container">
+    <div class="carousel-track">
+        {% for tutor in tutors %}
+        <!-- Each 'slide' in the carousel -->
+        <div class="carousel-slide">
+            <div class="tutor-info">
+                <img 
+                  src="{{ tutor.photo.url }}" 
+                  alt="{{ tutor.name }}"
+                  class="tutor-photo"
+                />
+                <h3>{{ tutor.name }}</h3>
+                <p>{{ tutor.expertise }}</p>
+                <p>£{{ tutor.hourly_rate }} per hour</p>
+            </div>
+        </div>
         {% endfor %}
     </div>
+
+    <!-- Carousel Navigation Buttons -->
+    <button class="carousel-button prev-button">&#10094;</button>
+    <button class="carousel-button next-button">&#10095;</button>
 </div>
+<script src="{% static 'js/carousel.js' %}"></script>
+
 {% endblock %}

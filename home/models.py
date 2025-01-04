@@ -7,19 +7,21 @@ class contactMessage(models.Model):
     ]
 
     name = models.CharField(max_length=50)
-    email = models.EmailField()
-    message = models.TextField()
+    email = models.EmailField(max_length=100)
+    message = models.TextField(max_length=400)
     subject = models.CharField(max_length=100)
-    level = models.CharField(choices=level )
+    level = models.CharField(choices=level, max_length=100)
     createdAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Message from {self.name} ({self.email})"
+        return f"Message from {self.name} ({self.email})",
 
-class HomePageContent(models.Model):
-    title = models.CharField(max_length=200)
-    body = models.TextField()
-    position = models.PositiveIntegerField()
+class Tutor(models.Model):
+    name = models.CharField(max_length=100)
+    about = models.CharField(max_length=100)
+    expertise = models.CharField(max_length=50)
+    hourly_rate = models.DecimalField(max_digits=5, decimal_places=2)
+    photo = models.ImageField(upload_to='tutors_photos/')
 
-    class Meta:
-        ordering = ['position']
+    def __str__(self):
+        return f"{self.name} - {self.expertise}"
