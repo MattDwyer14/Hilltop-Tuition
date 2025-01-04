@@ -5,6 +5,23 @@
 <div class="image-entry">
     <img src="{% static 'home/media/logo.jpg' %}" alt="Logo">
 </div>
+
+<!-- Review Marquee-->
+<div class="marquee-container">
+    <div class="marquee">
+        <div class="marquee-content">
+            {% for review in reviews %}
+            <span class="review"><em>{{ review.text }}</em></span>
+            {% endfor %}
+        </div>
+        <div class="marquee-content">
+            {% for review in reviews %}
+            <span class="review"><em>{{ review.text }}</em></span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 <div class="custom-home-text-container">
     {% for content in home_content %}
         <h1>{{ content.title }}</h1>

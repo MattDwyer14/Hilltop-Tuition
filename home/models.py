@@ -18,7 +18,7 @@ class contactMessage(models.Model):
 
 class Tutor(models.Model):
     name = models.CharField(max_length=100)
-    about = models.CharField(max_length=100)
+    about = models.CharField(max_length=200)
     expertise = models.CharField(max_length=50)
     review = models.CharField(max_length=100, blank=True)
     photo = models.ImageField(upload_to='tutors_photos/')
@@ -29,5 +29,12 @@ class Tutor(models.Model):
 class HomeContent(models.Model):
     title = models.CharField(max_length=100)
     paragraph = models.CharField(max_length=1000, blank=True)
+
+class Review(models.Model):
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
 
 

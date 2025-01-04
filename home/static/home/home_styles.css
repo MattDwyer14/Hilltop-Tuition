@@ -8,7 +8,7 @@
     --padding: 10px;
     --main-heading: 40px;
     --nav-link-size: 23px;
-    --page-heading: 23px;
+    --page-heading: 25px;
     --sub-heading: 20px;
     --paragraph: 21px;
 }
@@ -164,13 +164,13 @@ main {
 
 .tutor-info {
     text-align: center;
-    font-size: var(--paragraph);
+    font-size: var(--main-heading);
     gap: 10px;
 }
 
 .tutor-photo {
-    width: 150px;
-    height: 150px;
+    width: 300px;
+    height: 300px;
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 1rem;
@@ -200,6 +200,68 @@ main {
 
 .carousel-button:hover {
     background-color: rgba(0, 31, 63, 0.9);
+}
+
+.marquee-container {
+    position: relative;
+    width: 70%;
+    padding: 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    height: 50px;
+    margin: 0 auto;
+}
+
+.marquee {
+    display: flex;
+    width: calc(200%);
+    animation: scroll 10s linear infinite;
+}
+
+.marquee-content {
+    display: flex;
+    flex-shrink: 0;
+    min-width: 100%;
+    white-space: nowrap;
+}
+
+.review {
+    display: inline-block;
+    margin-right: 50px;
+    color: var(--font-color);
+    font-size: var(--page-heading);
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Fading effect */
+.marquee-container::before,
+.marquee-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 50px;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.marquee-container::before {
+    left: 0;
+    background: linear-gradient(to right, white, transparent);
+}
+
+.marquee-container::after {
+    right: 0;
+    background: linear-gradient(to left, white, transparent);
 }
 
 
