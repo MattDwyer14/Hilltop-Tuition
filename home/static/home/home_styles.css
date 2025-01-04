@@ -2,15 +2,15 @@
     --primary-color: #001f3f;
     --secondary-color: #f8f8f8;
     --background-color: #ffff;
-    --font-color: #0000;
-    --hover-color: #2980b9;
+    --font-color: #000000;
+    --hover-color: #0b5a8f;
     --font-main: "Trebuchet MS", Tahoma, sans-serif;
     --padding: 10px;
     --main-heading: 40px;
     --nav-link-size: 23px;
     --page-heading: 23px;
     --sub-heading: 20px;
-    --paragraph: 19px;
+    --paragraph: 21px;
 }
 
 /* Reset default browser styles */
@@ -24,9 +24,14 @@
 body {
     font-family: var(--font-main);
     background-color: var(--background-color);
-    color: var(--font-color);
+    color: var(--font-color) !important;
     display: flex;
+    width: 100%;
     flex-direction: column;
+}
+
+body p {
+    font-size: var(--paragraph)
 }
 
 /* Navigation Bar */
@@ -80,8 +85,9 @@ nav {
 .nav-link a {
     color: #fff;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: var(--nav-link-size);
     transition: color 0.3s ease;
+    padding-right: 20px;
 }
 
 .nav-link a:hover {
@@ -91,49 +97,64 @@ nav {
 /* Main Content Area */
 main {
     flex: 1;
-    padding: 20px;
-    margin: 20px auto;
     background-color: #fff;
+    color: var(--font-color);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    width: 100%;
 }
 
-.home-text-container {
+.custom-home-text-container {
     display: grid;
     grid-template-columns: 1fr;
+    padding-top: 10px;
     gap: 20px;
-    padding: 20px;
     text-align: center;
-    color: var(--font-color)
+    color: var(--font-color);
+    width: 70%;
+    margin: 0 auto; /* Centers horizontally */
 }
 
+
 .image-entry {
-    max-width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    padding: 10px; 
 }
+
+.image-entry img {
+    width: 200px; 
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ccc;
+}
+
 
 /* Carousel */
 
 /* Carousel Container */
 .carousel-container {
     position: relative;
-    width: 80%;
-    margin: 40px auto; /* centre horizontally */
-    overflow: hidden;  /* hide slides that are off-screen */
-    border-radius: 10px;
+    width: 40%;
+    margin: 40px auto;
+    overflow: hidden;
+    border-radius: 20px;
+    color: var(--font-color);
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 /* The 'track' that holds all slides side by side */
 .carousel-track {
-    display: flex;             /* place slides in a row */
+    display: flex; 
     transition: transform 0.5s ease-in-out; 
-    /* We'll shift this left/right with JavaScript */
 }
 
 /* Each Slide */
 .carousel-slide {
-    min-width: 100%;           /* each slide takes full container width */
+    min-width: 100%;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
@@ -141,9 +162,10 @@ main {
     padding: 20px;
 }
 
-/* Example styling for tutor info */
 .tutor-info {
     text-align: center;
+    font-size: var(--paragraph);
+    gap: 10px;
 }
 
 .tutor-photo {
@@ -159,11 +181,11 @@ main {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 31, 63, 0.7); /* Semi-transparent navy */
-    color: #fff;
+    background-color: var(--hover-color); 
+    color: var(--font-color);
     border: none;
     font-size: 2rem;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 1rem;
     cursor: pointer;
     border-radius: 5px;
 }

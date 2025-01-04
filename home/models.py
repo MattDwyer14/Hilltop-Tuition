@@ -20,8 +20,14 @@ class Tutor(models.Model):
     name = models.CharField(max_length=100)
     about = models.CharField(max_length=100)
     expertise = models.CharField(max_length=50)
-    hourly_rate = models.DecimalField(max_digits=5, decimal_places=2)
+    review = models.CharField(max_length=100, blank=True)
     photo = models.ImageField(upload_to='tutors_photos/')
 
     def __str__(self):
         return f"{self.name} - {self.expertise}"
+    
+class HomeContent(models.Model):
+    title = models.CharField(max_length=100)
+    paragraph = models.CharField(max_length=1000, blank=True)
+
+
