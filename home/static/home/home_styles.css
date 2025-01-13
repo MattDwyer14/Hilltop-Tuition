@@ -4,7 +4,7 @@
     --background-color: #ffff;
     --font-color: #000000;
     --hover-color: #0b5a8f;
-    --font-main: "Trebuchet MS", Tahoma, sans-serif;
+    --font-main: Didot, Didot LT STD, Hoefler Text, Garamond, Calisto MT, Times New Roman, serif;
     --padding: 10px;
     --main-heading: 40px;
     --nav-link-size: 23px;
@@ -181,7 +181,6 @@ main {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: var(--hover-color); 
     color: var(--font-color);
     border: none;
     font-size: 2rem;
@@ -199,7 +198,7 @@ main {
 }
 
 .carousel-button:hover {
-    background-color: rgba(0, 31, 63, 0.9);
+    transition: transform 0.2s ease;
 }
 
 .marquee-container {
