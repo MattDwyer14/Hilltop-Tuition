@@ -1,5 +1,21 @@
 from django.shortcuts import render
-from .models import Tutor, HomeContent, Review
+from .models import Tutor, HomeContent, Review, Expertise
+
+def meettheteam(request):
+    expertise_qs = Expertise.objects.all()
+    
+    selected_tise = request.GET.getlist('expertise')
+    
+    tutors = Tutor.objects.all()
+    if selected_tise:
+        tutors = tutors.filter(expertise__name__in=selected_tise).distinct()
+    
+    context = {
+        'team': tutors,
+        'expertise': expertise_qs,
+        'selected_tise': selected_tise,
+    }
+    return render(request, 'home/meettheteam.html', context)
 
 def home(request):
     tutors = Tutor.objects.all()

@@ -2,4 +2,54 @@
 {% load static %}
 {% block content %}
 
+<title>Meet the Team</title>
+<div class="meet-the-team-container">
+    <h2>Meet the Team</h2>
+    <form method="get" action="{% url 'meettheteam' %}">
+        <label for="Expertise">Filter:</label>
+
+        <div class="dropdown-container">
+            <button type="button" onclick="toggleDropdown('expertise-dropdown')">Expertise</button>
+            <div id="expertise-dropdown" class="dropdown" style="display: none;">
+                {% for tise in expertise %}
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="expertise" value="{{ tise.name }}" 
+                               {% if tise.name in selected_tise %}checked{% endif %}>
+                        {{ tise.name }}{% if tise.team_count %} ({{ tise.team_count }}){% endif %}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit">Filter</button>
+        <button type="button" onclick="resetSelection()">Reset</button>
+    </form>
+    
+    <div class="team-grid">
+        {% for tutor in team %}
+            <div class="tutor-card">
+                <h3>{{ tutor.title }} - {{ tutor.created|date:"SHORT_DATE_FORMAT" }}</h3>
+                {% if tutor.image %}
+                    <img src="{{ tutor.image.url }}" alt="Tutor Image">
+                {% endif %}
+                <p>{{ tutor.description }}</p>
+                <p><strong>- Expertise:</strong> {{ tutor.expertise }}</p>
+            </div>
+        {% endfor %}
+    </div>    
+</div>
+
+<script>
+    function toggleDropdown(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        const isDisplayed = dropdown.style.display === 'block';
+
+        document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
+        dropdown.style.display = isDisplayed ? 'none' : 'block';
+    }
+    function resetSelection() {
+        document.querySelectorAll("input[type='checkbox']").forEach(checkbox => checkbox.checked = false);
+    }
+</script>
+
 {% endblock %}
