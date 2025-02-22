@@ -275,6 +275,207 @@ footer {
     width: 100%;
 }
 
+/* Contact Page Styling */
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: var(--background-color);
+}
+
+.contact h1 {
+    font-size: var(--page-heading);
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+/* Contact Form Container */
+.contact-container {
+    background-color: var(--secondary-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Form Layout and Input Styling */
+.contact-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-container form p {
+    margin: 0;
+}
+
+.contact-container form input[type="text"],
+.contact-container form input[type="email"],
+.contact-container form input[type="url"],
+.contact-container form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: var(--font-main);
+    font-size: var(--paragraph);
+}
+
+.contact-container form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Submit Button */
+.contact-container form button {
+    padding: 12px;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    color: var(--secondary-color);
+    font-size: var(--nav-link-size);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact-container form button:hover {
+    background-color: var(--hover-color);
+}
+
+/* Contact Links */
+.contact-links {
+    margin-top: 20px;
+    text-align: center;
+    font-size: var(--sub-heading);
+}
+
+/* Meet the Team Page Container */
+.meet-the-team-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+}
+
+/* Page Heading */
+.meet-the-team-container h2 {
+    font-size: var(--main-heading);
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+
+/* Filter Form Styling */
+.meet-the-team-container form {
+    margin-bottom: 40px;
+}
+
+.meet-the-team-container form label {
+    font-size: var(--paragraph);
+    margin-right: 10px;
+}
+
+/* Dropdown Container */
+.dropdown-container {
+    display: inline-block;
+    position: relative;
+    margin-right: 20px;
+}
+
+/* Dropdown Button */
+.dropdown-container button {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Dropdown Content */
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--secondary-color);
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 100;
+}
+
+/* Checkbox Options */
+.dropdown label {
+    display: block;
+    font-size: var(--paragraph);
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+/* Form Buttons */
+.meet-the-team-container form button[type="submit"],
+.meet-the-team-container form button[type="button"] {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.meet-the-team-container form button:hover {
+    background-color: var(--hover-color);
+}
+
+/* Team Grid Layout */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Tutor Card Styling */
+.tutor-card {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.tutor-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Tutor Card Heading */
+.tutor-card h3 {
+    font-size: var(--sub-heading);
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+/* Tutor Image */
+.tutor-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+/* Tutor Card Paragraphs */
+.tutor-card p {
+    font-size: var(--paragraph);
+    margin-bottom: 10px;
+    color: var(--font-color);
+}
+
 /* Responsive Design */
 
 /* For Tablets and Below */
