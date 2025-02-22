@@ -26,14 +26,6 @@ class HomeContent(models.Model):
         return self.title
 
 
-class Review(models.Model):
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.text
-
-
 class Expertise(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Expertise Area")
 
@@ -42,18 +34,21 @@ class Expertise(models.Model):
 
 
 class Tutor(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Tutor Name")  # From the first model
-    about = models.CharField(max_length=200, blank=True)  # From the first model
-    review = models.CharField(max_length=100, blank=True)  # From the first model
-    created = models.DateTimeField(default=timezone.now, verbose_name="Date Joined")  # From the second model
+    name = models.CharField(max_length=100, verbose_name="Tutor Name")
+    about = models.TextField(max_length=2000, blank=True)
+    summary = models.CharField(
+        max_length=500,  # Adjust max_length as needed
+        verbose_name="Short Summary",
+        blank=True,
+        help_text="Enter a short summary (max 500 characters)."
+    )
+    created = models.DateTimeField(default=timezone.now, verbose_name="Date Joined")
     image = models.ImageField(
         upload_to='tutors/', 
         blank=True, 
         null=True, 
         verbose_name="Profile Image"
     )
-    description = models.TextField(verbose_name="Tutor Biography", blank=True)
-    
     expertise = models.ManyToManyField(
         Expertise, 
         related_name='tutors', 
@@ -67,3 +62,13 @@ class Tutor(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Review(models.Model):
+    tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name='reviews')
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        # Return a truncated version of the review text for display purposes.
+        return self.text[:50]

@@ -1,10 +1,12 @@
 from django.contrib import admin
-from .models import Tutor, ContactMessage, HomeContent, Review
+from .models import Tutor, Expertise, ContactMessage, HomeContent, Review
 
-admin.site.register(Tutor)
+@admin.register(Tutor)
+class TutorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'expertise_list', 'created')
+    filter_horizontal = ('expertise',)  # This widget makes selecting multiple expertise items easier
+
+admin.site.register(Expertise)
 admin.site.register(ContactMessage)
 admin.site.register(HomeContent)
-@admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('text', 'created_at')
-    search_fields = ('text',)
+admin.site.register(Review)

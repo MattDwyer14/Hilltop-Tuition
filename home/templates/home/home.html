@@ -26,7 +26,6 @@
         <h1>{{ content.title }}</h1>
         <p>{{ content.paragraph }}</p>
     {% endfor %}
-    <h1>Our Tutors</h1>
 </div>
 
 <!-- Carousel Container -->
@@ -36,15 +35,25 @@
         <!-- Each 'slide' in the carousel -->
         <div class="carousel-slide">
             <div class="tutor-info">
-                <img 
-                  src="{{ tutor.photo.url }}" 
-                  alt="{{ tutor.name }}"
-                  class="tutor-photo"
-                />
+                {% if tutor.image %}
+                    <img 
+                      src="{{ tutor.image.url }}" 
+                      alt="{{ tutor.name }}"
+                      class="tutor-photo"
+                    />
+                {% else %}
+                    <img 
+                      src="{% static 'home/media/default-tutor.jpg' %}" 
+                      alt="{{ tutor.name }}"
+                      class="tutor-photo"
+                    />
+                {% endif %}
                 <h3>{{ tutor.name }}</h3>
-                <p>Subject: {{ tutor.expertise }}</p>
-                <p>{{ tutor.about }}</p>
-                <p><em>{{ tutor.review }}</em></p>
+                <p>Subjects: {{ tutor.expertise_list }}</p>
+                <p>{{ tutor.summary }}</p>
+                {% if tutor.reviews.all %}
+                    <p><em>{{ tutor.reviews.all.0.text }}</em></p>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
