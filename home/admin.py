@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Tutor, contactMessage, HomeContent, Review
+from .models import Tutor, ContactMessage, HomeContent, Review
 
 admin.site.register(Tutor)
-admin.site.register(contactMessage)
+admin.site.register(ContactMessage)
 admin.site.register(HomeContent)
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
