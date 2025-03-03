@@ -32,6 +32,11 @@ INSTALLED_APPS = [
     'home',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://mattyswebsite-chcbefabg8c3hsf8.uksouth-01.azurewebsites.net",
+]
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # For static files
