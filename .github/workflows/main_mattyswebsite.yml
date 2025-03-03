@@ -1,7 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
-
 name: Build and deploy Python app to Azure Web App - MattysWebsite
 
 on:
@@ -9,13 +5,17 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read  # Required for actions/checkout
-
+    env:
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      azure_deployed: "true"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,9 +31,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Optional: Run tests here if needed
-      # - name: Run tests
-      #   run: python manage.py test
+      - name: Run database migrations
+        run: python manage.py migrate
 
       - name: Collect static files
         run: python manage.py collectstatic --noinput
@@ -50,13 +49,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write  # Required for requesting the JWT
-      contents: read   # Required for actions/checkout
-
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -69,26 +61,12 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_21C4B0DDDDF849CE82F09B7EC9E6F10E }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6C028ED841E24FA8B1BC5679E2484630 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DDE4CB2AE4B24107A6385D30A7ED7154 }}
-
-      - name: Run database migrations
-        # Ensure DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT are set as GitHub secrets
-        env:
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          # If you have 'azure_deployed' logic in your settings:
-          azure_deployed: "true"
-        run: |
-          python manage.py migrate
+          client-id: ${{ secrets.AZURE_WEBAPP_CLIENTID }}
+          tenant-id: ${{ secrets.AZURE_WEBAPP_TENANTID }}
+          subscription-id: ${{ secrets.AZURE_WEBAPP_SUBSCRIPTIONID }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'MattysWebsite'
-          slot-name: 'Production'
