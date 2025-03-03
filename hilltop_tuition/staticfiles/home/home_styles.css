@@ -1,0 +1,515 @@
+:root {
+    --primary-color: #001f3f;
+    --secondary-color: #f8f8f8;
+    --background-color: #ffff;
+    --font-color: #000000;
+    --hover-color: #0b5a8f;
+    --font-main: Didot, Didot LT STD, Hoefler Text, Garamond, Calisto MT, Times New Roman, serif;
+    --padding: 10px;
+    --main-heading: 40px;
+    --nav-link-size: 23px;
+    --page-heading: 25px;
+    --sub-heading: 20px;
+    --paragraph: 21px;
+}
+
+/* Reset default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: var(--font-main);
+    background-color: var(--background-color);
+    color: var(--font-color) !important;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+body p {
+    font-size: var(--paragraph)
+}
+
+/* Navigation Bar */
+nav {
+    background-color: var(--primary-color); /* Navy Blue */
+    color: var(--secondary-color);
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Navigation Container */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+/* Logo Styling */
+.logo a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: var(--main-heading);
+    font-weight: bold;
+}
+
+/* Hamburger Menu (Hidden on Desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.hamburger span {
+    height: 3px;
+    width: 25px;
+    background: #fff;
+    margin: 4px 0;
+    transition: 0.4s;
+}
+
+/* Navigation Links */
+.nav-link {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link a {
+    color: #fff;
+    text-decoration: none;
+    font-size: var(--nav-link-size);
+    transition: color 0.3s ease;
+    padding-right: 20px;
+}
+
+.nav-link a:hover {
+    color: #f0f0f0;
+}
+
+/* Main Content Area */
+main {
+    flex: 1;
+    background-color: #fff;
+    color: var(--font-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+}
+
+.custom-home-text-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-top: 10px;
+    gap: 20px;
+    text-align: center;
+    color: var(--font-color);
+    width: 70%;
+    margin: 0 auto; /* Centers horizontally */
+}
+
+
+.image-entry {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    padding: 10px; 
+}
+
+.image-entry img {
+    width: 200px; 
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ccc;
+}
+
+
+/* Carousel */
+
+/* Carousel Container */
+.carousel-container {
+    position: relative;
+    width: 40%;
+    margin: 40px auto;
+    overflow: hidden;
+    border-radius: 20px;
+    color: var(--font-color);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* The 'track' that holds all slides side by side */
+.carousel-track {
+    display: flex; 
+    transition: transform 0.5s ease-in-out; 
+}
+
+/* Each Slide */
+.carousel-slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.tutor-info {
+    text-align: center;
+    font-size: var(--main-heading);
+    gap: 10px;
+}
+
+.tutor-photo {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+/* Navigation Buttons */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--font-color);
+    border: none;
+    font-size: 2rem;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+.carousel-button:hover {
+    transition: transform 0.2s ease;
+}
+
+.marquee-container {
+    position: relative;
+    width: 70%;
+    padding: 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    height: 50px;
+    margin: 0 auto;
+}
+
+.marquee {
+    display: flex;
+    width: calc(200%);
+    animation: scroll 10s linear infinite;
+}
+
+.marquee-content {
+    display: flex;
+    flex-shrink: 0;
+    min-width: 100%;
+    white-space: nowrap;
+}
+
+.review {
+    display: inline-block;
+    margin-right: 50px;
+    color: var(--font-color);
+    font-size: var(--page-heading);
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Fading effect */
+.marquee-container::before,
+.marquee-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 50px;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.marquee-container::before {
+    left: 0;
+    background: linear-gradient(to right, white, transparent);
+}
+
+.marquee-container::after {
+    right: 0;
+    background: linear-gradient(to left, white, transparent);
+}
+
+
+/* Footer Styling */
+footer {
+    background-color: #001f3f; /* Navy Blue */
+    color: #fff;
+    text-align: center;
+    padding: 15px 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Contact Page Styling */
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: var(--background-color);
+}
+
+.contact h1 {
+    font-size: var(--page-heading);
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+/* Contact Form Container */
+.contact-container {
+    background-color: var(--secondary-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Form Layout and Input Styling */
+.contact-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-container form p {
+    margin: 0;
+}
+
+.contact-container form input[type="text"],
+.contact-container form input[type="email"],
+.contact-container form input[type="url"],
+.contact-container form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: var(--font-main);
+    font-size: var(--paragraph);
+}
+
+.contact-container form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Submit Button */
+.contact-container form button {
+    padding: 12px;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    color: var(--secondary-color);
+    font-size: var(--nav-link-size);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact-container form button:hover {
+    background-color: var(--hover-color);
+}
+
+/* Contact Links */
+.contact-links {
+    margin-top: 20px;
+    text-align: center;
+    font-size: var(--sub-heading);
+}
+
+/* Meet the Team Page Container */
+.meet-the-team-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+}
+
+/* Page Heading */
+.meet-the-team-container h2 {
+    font-size: var(--main-heading);
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+
+/* Filter Form Styling */
+.meet-the-team-container form {
+    margin-bottom: 40px;
+}
+
+.meet-the-team-container form label {
+    font-size: var(--paragraph);
+    margin-right: 10px;
+}
+
+/* Dropdown Container */
+.dropdown-container {
+    display: inline-block;
+    position: relative;
+    margin-right: 20px;
+}
+
+/* Dropdown Button */
+.dropdown-container button {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Dropdown Content */
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--secondary-color);
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 100;
+}
+
+/* Checkbox Options */
+.dropdown label {
+    display: block;
+    font-size: var(--paragraph);
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+/* Form Buttons */
+.meet-the-team-container form button[type="submit"],
+.meet-the-team-container form button[type="button"] {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.meet-the-team-container form button:hover {
+    background-color: var(--hover-color);
+}
+
+/* Team Grid Layout */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Tutor Card Styling */
+.tutor-card {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.tutor-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Tutor Card Heading */
+.tutor-card h3 {
+    font-size: var(--sub-heading);
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+/* Tutor Image */
+.tutor-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+/* Tutor Card Paragraphs */
+.tutor-card p {
+    font-size: var(--paragraph);
+    margin-bottom: 10px;
+    color: var(--font-color);
+}
+
+/* Responsive Design */
+
+/* For Tablets and Below */
+@media (max-width: 992px) {
+    .nav-container {
+        flex-wrap: wrap;
+    }
+}
+
+/* For Mobile Devices */
+@media (max-width: 768px) {
+    /* Show Hamburger Menu */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Hide Navigation Links by Default */
+    .nav-link {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #001f3f;
+        margin-top: 10px;
+        border-top: 1px solid #fff;
+    }
+
+    /* Show Navigation Links When Toggled */
+    .nav-link.show {
+        display: flex;
+    }
+
+    .nav-link a {
+        padding: 10px 0;
+        text-align: center;
+        border-bottom: 1px solid #fff;
+    }
+}
