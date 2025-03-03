@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from .models import Tutor, HomeContent, Review, Expertise
 from django.contrib import messages
 from .forms import ContactMessageForm
+import os
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 
 def meettheteam(request):
     expertise_qs = Expertise.objects.all()
@@ -30,12 +35,29 @@ def contact(request):
     if request.method == "POST":
         form = ContactMessageForm(request.POST)
         if form.is_valid():
-            form.save()
+            contact_message = form.save()
+
+            subject = f"Web Message from {contact_message.name}"
+            message = f"""
+Email: {contact_message.email}
+Subject: {contact_message.subject}
+Level: {contact_message.level}
+Message: {contact_message.message}
+
+{contact_message.name}
+            """
+            from_email = os.getenv('EMAIL_HOST_USER')
+            recipient = os.getenv('EMAIL_RECIPIENT') 
+
+            send_mail(subject, message, from_email, [recipient])
+
             messages.success(request, "Your message has been sent successfully!")
             return redirect('contact')
         else:
             messages.error(request, "There was an error with your submission. Please check the form and try again.")
     else:
         form = ContactMessageForm()
-        
+    print("EMAIL_HOST_USER:", os.getenv('EMAIL_HOST_USER'))
+    print("EMAIL_RECIPIENT:", os.getenv('EMAIL_RECIPIENT'))
+
     return render(request, 'home/contact.html', {'form': form})
