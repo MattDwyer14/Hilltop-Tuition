@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read  # required for actions/checkout
+      contents: read  # Required for actions/checkout
 
     steps:
       - name: Checkout repository
@@ -35,9 +35,6 @@ jobs:
       # - name: Run tests
       #   run: python manage.py test
 
-      - name: Run database migrations
-        run: python manage.py migrate
-
       - name: Collect static files
         run: python manage.py collectstatic --noinput
 
@@ -57,8 +54,8 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write  # required for requesting the JWT
-      contents: read   # required for actions/checkout
+      id-token: write  # Required for requesting the JWT
+      contents: read   # Required for actions/checkout
 
     steps:
       - name: Download artifact from build job
@@ -75,6 +72,19 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_21C4B0DDDDF849CE82F09B7EC9E6F10E }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6C028ED841E24FA8B1BC5679E2484630 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DDE4CB2AE4B24107A6385D30A7ED7154 }}
+
+      - name: Run database migrations
+        # Ensure DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT are set as GitHub secrets
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          # If you have 'azure_deployed' logic in your settings:
+          azure_deployed: "true"
+        run: |
+          python manage.py migrate
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
