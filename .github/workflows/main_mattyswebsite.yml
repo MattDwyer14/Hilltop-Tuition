@@ -31,9 +31,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Optional: Add your test commands here, e.g.:
+      # Optional: Run tests here if needed
       # - name: Run tests
       #   run: python manage.py test
+
+      - name: Run database migrations
+        run: python manage.py migrate
+
+      - name: Collect static files
+        run: python manage.py collectstatic --noinput
 
       - name: Zip artifact for deployment
         run: zip -r release.zip ./* -x "venv/*"
