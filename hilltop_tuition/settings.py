@@ -17,10 +17,10 @@ AZURE_DEPLOYED = os.getenv('azure_deployed', 'false').lower() == 'true'
 
 # Set DEBUG accordingly
 #DEBUG = not AZURE_DEPLOYED  # DEBUG=False in production
-if AZURE_DEPLOYED:
-    DEBUG = False
-else:
-    DEBUG = True
+# if AZURE_DEPLOYED:
+#     DEBUG = False
+# else:
+DEBUG = True
 
 
 # For production, set ALLOWED_HOSTS to your domain(s); here we default to '*' for simplicity.
