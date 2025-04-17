@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write  # ✅ REQUIRED for Azure Login with OpenID Connect (OIDC)
-  contents: read   # ✅ Needed to read repo contents
+  id-token: write  # REQUIRED for Azure Login with OpenID Connect (OIDC)
+  contents: read   # Needed to read repo contents
 
 jobs:
   build:
