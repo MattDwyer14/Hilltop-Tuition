@@ -9,7 +9,10 @@ if os.path.exists(BASE_DIR / '.env'):
     load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-AZURE_DEPLOYED = os.getenv('azure_deployed', 'false').lower() == 'true'
+AZURE_DEPLOYED = (
+    os.getenv('AZURE_DEPLOYED',
+              os.getenv('azure_deployed', 'false'))
+).lower() == 'true'
 DEBUG = not AZURE_DEPLOYED
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',') if AZURE_DEPLOYED else ['*']
 
