@@ -40,8 +40,22 @@ jobs:
       - name: Run database migrations
         run: python manage.py migrate
 
+      - name: Debug Django static settings
+        run: |
+          python3 - <<'EOF'
+          import os, django
+          from django.conf import settings
+          os.environ.setdefault('DJANGO_SETTINGS_MODULE','hilltop_tuition.settings')
+          django.setup()
+          print("AZURE_DEPLOYED =", settings.AZURE_DEPLOYED)
+          print("STATICFILES_STORAGE =", settings.STATICFILES_STORAGE)
+          print("AZURE_ACCOUNT_NAME =", settings.AZURE_ACCOUNT_NAME)
+          print("AZURE_ACCOUNT_KEY =", bool(settings.AZURE_ACCOUNT_KEY))
+          EOF
+
       - name: Collect static files
         run: python manage.py collectstatic --noinput
+
 
       - name: Zip artifact for deployment
         run: zip -r release.zip ./* -x "venv/*"
