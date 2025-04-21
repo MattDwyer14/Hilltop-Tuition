@@ -35,18 +35,18 @@
         <!-- Each 'slide' in the carousel -->
         <div class="carousel-slide">
             <div class="tutor-info">
-                {% if tutor.image %}
-                    <img 
-                      src="{{ tutor.image.url }}" 
-                      alt="{{ tutor.name }}"
-                      class="tutor-photo"
-                    />
+                {% if tutor.photo %}
+                <img
+                    src="{{ tutor.photo.url }}"
+                    alt="{{ tutor.name }}"
+                    class="tutor-photo"
+                />
                 {% else %}
-                    <img 
-                      src="{% static 'home/media/default-tutor.jpg' %}" 
-                      alt="{{ tutor.name }}"
-                      class="tutor-photo"
-                    />
+                <img
+                    src="{% static 'home/media/default-tutor.jpg' %}"
+                    alt="{{ tutor.name }}"
+                    class="tutor-photo"
+                />
                 {% endif %}
                 <h3>{{ tutor.name }}</h3>
                 <p>Subjects: {{ tutor.expertise_list }}</p>
