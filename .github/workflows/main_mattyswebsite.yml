@@ -44,24 +44,20 @@ jobs:
         run: |
           python3 - <<'EOF'
           import os
-          # 1) set the settings module
+          # 1) point Django at your settings module first
           os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hilltop_tuition.settings')
           
-          # 2) now import and configure Django
+          # 2) then configure Django
           import django
           django.setup()
 
-          # 3) inspect your values
+          # 3) inspect your custom settings
           from django.conf import settings
           print("AZURE_DEPLOYED =", settings.AZURE_DEPLOYED)
           print("STATICFILES_STORAGE =", settings.STATICFILES_STORAGE)
           print("AZURE_ACCOUNT_NAME =", settings.AZURE_ACCOUNT_NAME)
           print("AZURE_ACCOUNT_KEY set? ", bool(settings.AZURE_ACCOUNT_KEY))
           EOF
-
-      # (Optional) dump all env vars to double‑check secrets are coming through
-      - name: Dump environment
-        run: env | sort
 
       - name: Collect static files
         run: python manage.py collectstatic --noinput
@@ -72,16 +68,18 @@ jobs:
           inlineScript: |
             az storage blob upload-batch \
               --account-name ${{ env.AZURE_ACCOUNT_NAME }} \
-              --account-key  ${{ env.AZURE_ACCOUNT_KEY  }} \
+              --account-key  ${{ env.AZURE_ACCOUNT_KEY   }} \
               --destination static \
               --source      hilltop_tuition/staticfiles \
+              --overwrite \
               --no-progress
 
             az storage blob upload-batch \
               --account-name ${{ env.AZURE_ACCOUNT_NAME }} \
-              --account-key  ${{ env.AZURE_ACCOUNT_KEY  }} \
+              --account-key  ${{ env.AZURE_ACCOUNT_KEY   }} \
               --destination media \
               --source      media/tutors \
+              --overwrite \
               --no-progress
 
       - name: Zip artifact for deployment
