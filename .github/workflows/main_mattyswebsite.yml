@@ -26,6 +26,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Azure CLI
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.80.0
+
       - name: Set up Python version
         uses: actions/setup-python@v5
         with:
@@ -56,6 +61,23 @@ jobs:
       - name: Collect static files
         run: python manage.py collectstatic --noinput
 
+      - name: Upload staticfiles to Azure Blob
+        run: |
+          az storage blob upload-batch \
+            --account-name ${{ secrets.AZURE_ACCOUNT_NAME }} \
+            --account-key  ${{ secrets.AZURE_ACCOUNT_KEY  }} \
+            --destination static \
+            --source      hilltop_tuition/staticfiles \
+            --no-progress
+
+      - name: Upload media to Azure Blob
+        run: |
+          az storage blob upload-batch \
+            --account-name ${{ secrets.AZURE_ACCOUNT_NAME }} \
+            --account-key  ${{ secrets.AZURE_ACCOUNT_KEY  }} \
+            --destination media \
+            --source      media/tutors \
+            --no-progress
 
       - name: Zip artifact for deployment
         run: zip -r release.zip ./* -x "venv/*"
