@@ -30,7 +30,10 @@
             <div class="tutor-card">
                 <h3>{{ tutor.name }}</h3>
                 {% if tutor.image %}
-                    <img src="{{ tutor.image.url }}" alt="Tutor Image">
+                <img src="{{ tutor.image.url }}" 
+                    alt="{{ tutor.name }}"
+                    class="tutor-photo"
+                />
                 {% endif %}
                 <p>{{ tutor.about }}</p>
                 <p><strong>- Expertise:</strong> {{ tutor.expertise_list }}</p>
