@@ -1,9 +1,13 @@
 name: Build and deploy Python app to Azure Web App - MattysWebsite
 
+# Grant OIDC token ability
+permissions:
+  id-token: write    # ← MUST for azure/login to fetch a token
+  contents: read     # ← to let you pull/check out your code
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -11,25 +15,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python version
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Create and activate virtual environment
+      - name: Create venv & install deps
         run: |
           python -m venv venv
           source venv/bin/activate
-
-      - name: Install dependencies
-        run: |
-          source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Run database migrations
+      - name: Migrate DB
         env:
           AZURE_DEPLOYED: 'true'
           SECRET_KEY:       ${{ secrets.SECRET_KEY }}
@@ -59,38 +58,33 @@ jobs:
           source venv/bin/activate
           python manage.py collectstatic --noinput
 
-      - name: Zip artifact for deployment
+      - name: Zip and upload artifact
         run: zip -r release.zip ./* -x "venv/*"
-
-      - name: Upload artifact for deployment
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: release.zip
 
   deploy:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: python-app
 
-      - name: Unzip artifact
-        run: unzip release.zip
+      - run: unzip release.zip
 
-      - name: Login to Azure
+      - name: Login to Azure via OIDC
         uses: azure/login@v2
         with:
-          client-id:       ${{ secrets.CLIENTID }}
-          tenant-id:       ${{ secrets.TENANTID }}
-          subscription-id: ${{ secrets.SUBSCRIPTIONID }}
+          client-id:       ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id:       ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Web App
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name:  'MattysWebsite'
           slot-name: 'Production'
