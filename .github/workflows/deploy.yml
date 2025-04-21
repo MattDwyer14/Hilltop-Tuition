@@ -59,6 +59,14 @@ jobs:
           source venv/bin/activate
           python manage.py collectstatic --noinput
 
+      - name: Run tests
+        env:
+          AZURE_DEPLOYED: 'true'
+          SECRET_KEY:       ${{ secrets.SECRET_KEY }}
+        run: |
+          source venv/bin/activate
+          pytest --maxfail=1 --disable-warnings -q
+
       - name: Zip artifact for deployment
         run: zip -r release.zip ./* -x "venv/*"
 
@@ -90,9 +98,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id:       ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id:       ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id:       ${{ secrets.AZURE_WEBAPP_CLIENTID }}
+          tenant-id:       ${{ secrets.AZURE_WEBAPP_TENANTID }}
+          subscription-id: ${{ secrets.AZURE_WEBAPP_SUBSCRIPTIONID }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
