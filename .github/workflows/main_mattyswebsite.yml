@@ -43,15 +43,25 @@ jobs:
       - name: Debug Django static settings
         run: |
           python3 - <<'EOF'
-          import os, django
-          from django.conf import settings
-          os.environ.setdefault('DJANGO_SETTINGS_MODULE','hilltop_tuition.settings')
+          import os
+          # 1) set the settings module
+          os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hilltop_tuition.settings')
+          
+          # 2) now import and configure Django
+          import django
           django.setup()
+
+          # 3) inspect your values
+          from django.conf import settings
           print("AZURE_DEPLOYED =", settings.AZURE_DEPLOYED)
           print("STATICFILES_STORAGE =", settings.STATICFILES_STORAGE)
           print("AZURE_ACCOUNT_NAME =", settings.AZURE_ACCOUNT_NAME)
-          print("AZURE_ACCOUNT_KEY =", bool(settings.AZURE_ACCOUNT_KEY))
+          print("AZURE_ACCOUNT_KEY set? ", bool(settings.AZURE_ACCOUNT_KEY))
           EOF
+
+      # (Optional) dump all env vars to double‑check secrets are coming through
+      - name: Dump environment
+        run: env | sort
 
       - name: Collect static files
         run: python manage.py collectstatic --noinput
