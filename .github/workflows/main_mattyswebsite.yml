@@ -14,12 +14,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      azure_deployed: "true"
+      DB_NAME:               ${{ secrets.DB_NAME }}
+      DB_USER:               ${{ secrets.DB_USER }}
+      DB_PASSWORD:           ${{ secrets.DB_PASSWORD }}
+      DB_HOST:               ${{ secrets.DB_HOST }}
+      DB_PORT:               ${{ secrets.DB_PORT }}
+      AZURE_DEPLOYED:        "true"
+      AZURE_ACCOUNT_NAME:    ${{ secrets.AZURE_ACCOUNT_NAME }}
+      AZURE_ACCOUNT_KEY:     ${{ secrets.AZURE_ACCOUNT_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -65,8 +67,8 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_WEBAPP_CLIENTID }}
-          tenant-id: ${{ secrets.AZURE_WEBAPP_TENANTID }}
+          client-id:       ${{ secrets.AZURE_WEBAPP_CLIENTID }}
+          tenant-id:       ${{ secrets.AZURE_WEBAPP_TENANTID }}
           subscription-id: ${{ secrets.AZURE_WEBAPP_SUBSCRIPTIONID }}
 
       - name: Deploy to Azure Web App
