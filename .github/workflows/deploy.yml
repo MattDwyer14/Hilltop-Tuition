@@ -1,19 +1,6 @@
-name: Build and deploy Python app to Azure Web App - MattysWebsite
-
-# Grant OIDC token ability
-permissions:
-  id-token: write    # ← MUST for azure/login to fetch a token
-  contents: read     # ← to let you pull/check out your code
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -22,44 +9,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Create venv & install deps
+      - name: Install dependencies into .python_packages
         run: |
           python -m venv venv
           source venv/bin/activate
+          pip install --upgrade pip
           pip install -r requirements.txt
+          # copy site‑packages into a folder Azure will pick up:
+          mkdir -p .python_packages/lib
+          cp -r venv/lib/python3.12/site-packages/* .python_packages/lib/
 
-      - name: Migrate DB
-        env:
-          AZURE_DEPLOYED: 'true'
-          SECRET_KEY:       ${{ secrets.SECRET_KEY }}
-          DB_HOST:          ${{ secrets.DB_HOST }}
-          DB_PORT:          ${{ secrets.DB_PORT }}
-          DB_NAME:          ${{ secrets.DB_NAME }}
-          DB_USER:          ${{ secrets.DB_USER }}
-          DB_PASSWORD:      ${{ secrets.DB_PASSWORD }}
-          AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
-          AZURE_ACCOUNT_KEY:  ${{ secrets.AZURE_ACCOUNT_KEY }}
+      - name: Collect static, migrate, zip
         run: |
           source venv/bin/activate
           python manage.py migrate
-
-      - name: Collect static files
-        env:
-          AZURE_DEPLOYED: 'true'
-          SECRET_KEY:       ${{ secrets.SECRET_KEY }}
-          DB_HOST:          ${{ secrets.DB_HOST }}
-          DB_PORT:          ${{ secrets.DB_PORT }}
-          DB_NAME:          ${{ secrets.DB_NAME }}
-          DB_USER:          ${{ secrets.DB_USER }}
-          DB_PASSWORD:      ${{ secrets.DB_PASSWORD }}
-          AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
-          AZURE_ACCOUNT_KEY:  ${{ secrets.AZURE_ACCOUNT_KEY }}
-        run: |
-          source venv/bin/activate
           python manage.py collectstatic --noinput
+          zip -r release.zip . -x "venv/*"
 
-      - name: Zip and upload artifact
-        run: zip -r release.zip ./* -x "venv/*"
       - uses: actions/upload-artifact@v4
         with:
           name: python-app
@@ -68,7 +34,6 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -88,3 +53,4 @@ jobs:
         with:
           app-name:  'MattysWebsite'
           slot-name: 'Production'
+          package:   'release.zip'
