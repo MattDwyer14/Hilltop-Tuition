@@ -1,45 +1,21 @@
+name: Deploy Django to Azure Web App
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install dependencies into .python_packages
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          # copy site‑packages into a folder Azure will pick up:
-          mkdir -p .python_packages/lib
-          cp -r venv/lib/python3.12/site-packages/* .python_packages/lib/
-
-      - name: Collect static, migrate, zip
-        run: |
-          source venv/bin/activate
-          python manage.py migrate
-          python manage.py collectstatic --noinput
-          zip -r release.zip . -x "venv/*"
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: python-app
-          path: release.zip
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: python-app
-
-      - run: unzip release.zip
 
       - name: Login to Azure via OIDC
         uses: azure/login@v2
@@ -53,4 +29,4 @@ jobs:
         with:
           app-name:  'MattysWebsite'
           slot-name: 'Production'
-          package:   'release.zip'
+          package:   '.'
