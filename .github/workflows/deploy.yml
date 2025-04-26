@@ -29,19 +29,14 @@ jobs:
           pip install -r requirements.txt
 
       - name: Collect static files to Azure Blob
-        run: |
-          set -e  # fail on any non-zero
-          python - <<'PY'
-          import os, hilltop_tuition.settings as s
-          print("AZURE_DEPLOYED =", s.AZURE_DEPLOYED)
-          print("STATICFILES_STORAGE =", getattr(s, 'STATICFILES_STORAGE', 'NOT SET'))
-          PY
-              python manage.py collectstatic --noinput --verbosity 2
         env:
-          AZURE_DEPLOYED: 'true'
+          AZURE_DEPLOYED: 'True'               # capital “T” so bool(AZURE_DEPLOYED) is true
           AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
           AZURE_ACCOUNT_KEY:  ${{ secrets.AZURE_ACCOUNT_KEY }}
           DJANGO_SETTINGS_MODULE: hilltop_tuition.settings
+        run: |
+          set -e
+          python manage.py collectstatic --noinput --verbosity 2 --clear
 
 
       - name: Login to Azure via OIDC
