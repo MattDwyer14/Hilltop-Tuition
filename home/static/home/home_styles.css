@@ -353,13 +353,20 @@ footer {
 }
 
 /* Meet the Team Page Container */
+/* Ensure the Meet The Team container spans full width on all devices */
 .meet-the-team-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
+    width: 100%; /* change from max-content to full width */
     text-align: center;
+    padding-top: 30px;
     background-color: var(--secondary-color);
-    border-radius: 8px;
+}
+
+/* Constrain the cards to the central 80% on desktop/laptop only */
+@media (min-width: 769px) {
+    .team-grid {
+        width: 80%;       /* central 80% width */
+        margin: 0 auto;   /* center horizontally */
+    }
 }
 
 /* Page Heading */
