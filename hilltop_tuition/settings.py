@@ -115,27 +115,38 @@ EMAIL_HOST_PASSWORD  = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL   = EMAIL_HOST_USER
 
 # ─── AZURE STORAGE ─────────────────────────────────────────────────────────────
-AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
-AZURE_ACCOUNT_KEY  = os.getenv("AZURE_ACCOUNT_KEY")
+if AZURE_DEPLOYED:
+    AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
+    AZURE_ACCOUNT_KEY  = os.getenv("AZURE_ACCOUNT_KEY")
 
-class StaticStorage(AzureStorage):
-    account_name    = AZURE_ACCOUNT_NAME
-    account_key     = AZURE_ACCOUNT_KEY
-    azure_container = "static"
-    expiration_secs = None
+    class StaticStorage(AzureStorage):
+        account_name    = AZURE_ACCOUNT_NAME
+        account_key     = AZURE_ACCOUNT_KEY
+        azure_container = "static"
+        expiration_secs = None
 
-class MediaStorage(AzureStorage):
-    account_name    = AZURE_ACCOUNT_NAME
-    account_key     = AZURE_ACCOUNT_KEY
-    azure_container = "media"
-    expiration_secs = None
+    class MediaStorage(AzureStorage):
+        account_name    = AZURE_ACCOUNT_NAME
+        account_key     = AZURE_ACCOUNT_KEY
+        azure_container = "media"
+        expiration_secs = None
 
-STATICFILES_STORAGE  = "hilltop_tuition.settings.StaticStorage"
-DEFAULT_FILE_STORAGE = "hilltop_tuition.settings.MediaStorage"
+    STATICFILES_STORAGE  = "hilltop_tuition.settings.StaticStorage"
+    DEFAULT_FILE_STORAGE = "hilltop_tuition.settings.MediaStorage"
 
-STATIC_URL = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/static/"
-MEDIA_URL  = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/media/"
+    STATIC_URL = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/static/"
+    MEDIA_URL  = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/media/"
 
-# local fallback (not used in Azure)
+else:
+    # local development: serve from local dirs
+    STATIC_URL = "/static/"
+    MEDIA_URL  = "/media/"
+
+# ─── STATIC FILES (local dev) ───────────────────────────────────────────────────
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# ─── LOCAL FALLBACK STORAGE ─────────────────────────────────────────────────────
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT  = BASE_DIR / "media"
