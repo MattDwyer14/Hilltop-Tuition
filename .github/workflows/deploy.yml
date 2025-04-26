@@ -30,7 +30,7 @@ jobs:
 
       - name: Collect static files to Azure Blob
         env:
-          AZURE_DEPLOYED: 'True'               # capital “T” so bool(AZURE_DEPLOYED) is true
+          AZURE_DEPLOYED: 'True'              
           AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
           AZURE_ACCOUNT_KEY:  ${{ secrets.AZURE_ACCOUNT_KEY }}
           DJANGO_SETTINGS_MODULE: hilltop_tuition.settings
@@ -52,3 +52,4 @@ jobs:
           app-name:  'MattysWebsite'
           slot-name: 'Production'
           package:   '.'
+          enable-oryx-build: true
