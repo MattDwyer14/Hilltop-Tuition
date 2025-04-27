@@ -1,29 +1,37 @@
-import os
+"""
+Django settings for Hilltop Tuition – production-ready for Azure App Service
+with static & media files on Azure Blob Storage via Managed Identity.
+"""
+
 from pathlib import Path
+import os
+
 from dotenv import load_dotenv
+from azure.identity import DefaultAzureCredential
 from storages.backends.azure_storage import AzureStorage
 
 # ─── BASE ───────────────────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent
 
-# Load .env in local dev
+# Load .env only for local development
 if (BASE_DIR / ".env").exists():
     load_dotenv()
 
-# ─── CORE SETTINGS ──────────────────────────────────────────────────────────────
-SECRET_KEY    = os.getenv("SECRET_KEY")
-AZURE_DEPLOYED = os.getenv("AZURE_DEPLOYED", os.getenv("azure_deployed", "false")).lower() == "true"
-DEBUG         =  not AZURE_DEPLOYED
+# ─── CORE SETTINGS ─────────────────────────────────────────────────────────────
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+AZURE_DEPLOYED = os.getenv("AZURE_DEPLOYED") == "true"
+DEBUG = not AZURE_DEPLOYED
+
 if AZURE_DEPLOYED:
-    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",") if AZURE_DEPLOYED else ["*"]
     ALLOWED_HOSTS = [
         "hilltoptuition.com",
         "www.hilltoptuition.com",
-        # the Azure App Service default host:
-        "mattyswebsite-chcbefabg8c3hsf8.uksouth-01.azurewebsites.net",
+        # Azure default host:
+        "hilltop-tuition-prod.azurewebsites.net",
     ]
 else:
-     ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS = ["*"]
 
 # ─── APPS & MIDDLEWARE ─────────────────────────────────────────────────────────
 INSTALLED_APPS = [
@@ -34,10 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    # Third‑party
+    # Third-party
     "storages",
-
     # Local
     "home",
 ]
@@ -73,18 +79,17 @@ TEMPLATES = [
 WSGI_APPLICATION = "hilltop_tuition.wsgi.application"
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://mattyswebsite-chcbefabg8c3hsf8.uksouth-01.azurewebsites.net",
+    "https://hilltop-tuition-prod.azurewebsites.net",
     "https://hilltoptuition.com",
 ]
 
-# ─── DATABASES ──────────────────────────────────────────────────────────────────
+# ─── DATABASES ─────────────────────────────────────────────────────────────────
 if AZURE_DEPLOYED:
     DATABASES = {
         "default": {
             "ENGINE":   "django.db.backends.postgresql",
             "NAME":     os.getenv("DB_NAME"),
             "USER":     os.getenv("DB_USER"),
-            "PASSWORD": os.getenv("DB_PASSWORD"),
             "HOST":     os.getenv("DB_HOST"),
             "PORT":     os.getenv("DB_PORT", "5432"),
             "OPTIONS":  {"sslmode": "require"},
@@ -98,7 +103,7 @@ else:
         }
     }
 
-# ─── AUTH, I18N, TIME ───────────────────────────────────────────────────────────
+# ─── AUTH / I18N / TIME ────────────────────────────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -107,54 +112,48 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = "en-gb"
-TIME_ZONE     = "UTC"
-USE_I18N      = True
-USE_TZ        = True
+TIME_ZONE = "UTC"
+USE_I18N = True
+USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ─── EMAIL ─────────────────────────────────────────────────────────────────────
-EMAIL_BACKEND        = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST           = os.getenv("EMAIL_HOST")
-EMAIL_PORT           = 587
-EMAIL_USE_TLS        = True
-EMAIL_HOST_USER      = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD  = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL   = EMAIL_HOST_USER
+EMAIL_BACKEND       = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST          = os.getenv("EMAIL_HOST")
+EMAIL_PORT          = 587
+EMAIL_USE_TLS       = True
+EMAIL_HOST_USER     = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL  = EMAIL_HOST_USER
 
-# ─── AZURE STORAGE ─────────────────────────────────────────────────────────────
+# ─── AZURE STORAGE (static & media) ────────────────────────────────────────────
 if AZURE_DEPLOYED:
-    AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
-    AZURE_ACCOUNT_KEY  = os.getenv("AZURE_ACCOUNT_KEY")
+    STORAGE_ACCOUNT = os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
+    credential = DefaultAzureCredential()
 
     class StaticStorage(AzureStorage):
-        account_name    = AZURE_ACCOUNT_NAME
-        account_key     = AZURE_ACCOUNT_KEY
+        account_name    = STORAGE_ACCOUNT
+        credential      = credential
         azure_container = "static"
         expiration_secs = None
 
     class MediaStorage(AzureStorage):
-        account_name    = AZURE_ACCOUNT_NAME
-        account_key     = AZURE_ACCOUNT_KEY
+        account_name    = STORAGE_ACCOUNT
+        credential      = credential
         azure_container = "media"
         expiration_secs = None
 
     STATICFILES_STORAGE  = "hilltop_tuition.settings.StaticStorage"
     DEFAULT_FILE_STORAGE = "hilltop_tuition.settings.MediaStorage"
 
-    STATIC_URL = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/static/"
-    MEDIA_URL  = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/media/"
-
+    STATIC_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/static/"
+    MEDIA_URL  = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/media/"
 else:
-    # local development: serve from local dirs
     STATIC_URL = "/static/"
     MEDIA_URL  = "/media/"
 
-# ─── STATIC FILES (local dev) ───────────────────────────────────────────────────
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
-# ─── LOCAL FALLBACK STORAGE ─────────────────────────────────────────────────────
+# ─── STATIC FILES (local dev only) ────────────────────────────────────────────
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT  = BASE_DIR / "media"
