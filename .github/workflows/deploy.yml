@@ -2,20 +2,18 @@
 name: Build and deploy – HillTop Tuition
 
 on:
-  permissions:
-    id-token: write
-    contents: read
   push:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+    id-token: write
+    contents: read
+
 jobs:
 # ───────────────────────────────────── build ───────────────────────────────────
   build:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read               
+    runs-on: ubuntu-latest            
 
     steps:
     - uses: actions/checkout@v4
