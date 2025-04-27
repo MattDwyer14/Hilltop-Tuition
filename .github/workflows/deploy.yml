@@ -1,5 +1,4 @@
-name: Build and deploy Python app to Azure Web App - MattsPortfolio
-
+name: Build and deploy Python app to Azure Web App - HillTop
 on:
   push:
     branches:
