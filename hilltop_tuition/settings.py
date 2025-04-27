@@ -154,6 +154,7 @@ else:
     MEDIA_URL  = "/media/"
 
 # ─── STATIC FILES (local dev only) ────────────────────────────────────────────
-STATICFILES_DIRS = [BASE_DIR / "static"]
+if not AZURE_DEPLOYED:
+    STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT  = BASE_DIR / "media"
