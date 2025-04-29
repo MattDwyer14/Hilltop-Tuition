@@ -59,10 +59,10 @@ jobs:
           AZURE_ACCOUNT_KEY: ${{ secrets.AZURE_ACCOUNT_KEY }}
           AZURE_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
 
-      - name: List tables
+      - name: Show migrations
         run: |
           source venv/bin/activate
-          python manage.py dbshell -c "\dt"
+          python manage.py showmigrations
         env:
           AZURE_DEPLOYMENT: 'true'
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
