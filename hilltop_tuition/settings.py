@@ -85,16 +85,24 @@ CSRF_TRUSTED_ORIGINS = [
 
 # ─── DATABASES ─────────────────────────────────────────────────────────────────
 if AZURE_DEPLOYED:
-    DB_NAME = os.getenv("DB_NAME")
-    DB_USER = os.getenv("DB_USER")
+    DB_NAME     = os.getenv("DB_NAME")
+    DB_USER     = os.getenv("DB_USER")
     DB_PASSWORD = os.getenv("DB_PASSWORD")
-    DB_HOST = os.getenv("DB_HOST")
-    DB_PORT = os.getenv("DB_PORT", "5432")  # default to 5432 if not set
-
-    DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    DB_HOST     = os.getenv("DB_HOST")
+    DB_PORT     = os.getenv("DB_PORT", "5432")
 
     DATABASES = {
-        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql',
+            'NAME':     DB_NAME,
+            'USER':     DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST':     DB_HOST,
+            'PORT':     DB_PORT,
+            'OPTIONS':  {
+                'sslmode': 'require',
+            },
+        }
     }
 else:
     DATABASES = {
