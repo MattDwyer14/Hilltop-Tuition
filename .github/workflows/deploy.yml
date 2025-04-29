@@ -54,6 +54,18 @@ jobs:
           slot-name: 'Production'
           package: .
 
+      - name: Install Dependencies
+        id: deploy-dependencies
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'WA-Hilltop-Tuition-27042025'
+          slot-name: 'Production'
+          command: |
+            cd/home/site/wwwroot
+            source antenv/bin/activate
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+
       - name: Run migrations on Azure
         uses: azure/webapps-deploy@v3
         with:
