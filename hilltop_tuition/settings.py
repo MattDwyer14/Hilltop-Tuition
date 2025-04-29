@@ -5,7 +5,7 @@ with static & media files on Azure Blob Storage via Managed Identity.
 
 from pathlib import Path
 import os
-
+import dj_database_url
 from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
 from storages.backends.azure_storage import AzureStorage
@@ -86,23 +86,22 @@ CSRF_TRUSTED_ORIGINS = [
 
 # ─── DATABASES ─────────────────────────────────────────────────────────────────
 if AZURE_DEPLOYED:
+    DB_NAME = os.getenv("DB_NAME")
+    DB_USER = os.getenv("DB_USER")
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
+    DB_HOST = os.getenv("DB_HOST")
+    DB_PORT = os.getenv("DB_PORT", "5432")  # default to 5432 if not set
+
+    DATABASE_URL = f"postgres://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
     DATABASES = {
-    'default': {
-        'ENGINE'  : 'django.db.backends.postgresql',
-        'HOST'    : os.getenv("DB_HOST"),
-        'PORT'    : '5432',
-        'NAME'    : os.getenv("DB_NAME"),
-        'USER'    : os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'OPTIONS' : {'sslmode': 'require'},
-        }
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
-    
 else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME":   BASE_DIR / "db.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 
