@@ -49,3 +49,4 @@ jobs:
         app-name:            WA-Hilltop-Tuition-27042025
         resource-group-name: RG-Hilltop-Tuition-27042025
         package:             .
+        enable-oryx-build:   true
