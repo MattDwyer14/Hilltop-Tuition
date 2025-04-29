@@ -70,5 +70,4 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        # Return a truncated version of the review text for display purposes.
         return self.text[:50]
