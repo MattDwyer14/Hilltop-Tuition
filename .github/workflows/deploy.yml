@@ -59,6 +59,18 @@ jobs:
           AZURE_ACCOUNT_KEY: ${{ secrets.AZURE_ACCOUNT_KEY }}
           AZURE_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
 
+      - name: List tables
+        run: |
+          source venv/bin/activate
+          python manage.py dbshell -c "\dt"
+        env:
+          AZURE_DEPLOYMENT: 'true'
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
       - name: Run collectstatic
         run: |
           source venv/bin/activate
