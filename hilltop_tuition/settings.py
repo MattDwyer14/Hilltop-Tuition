@@ -137,7 +137,7 @@ if AZURE_DEPLOYED:
         "default": {
             "BACKEND": "storages.backends.azure_storage.AzureStorage",
             "OPTIONS": {
-                "account_name": os.getenv('AZURE_ACCOUNT_NAME'),
+                "account_name": os.getenv('AZURE_STORAGE_ACCOUNT_NAME'),
                 "account_key": os.getenv('AZURE_ACCOUNT_KEY'),
                 "azure_container": "media"  # Media files here
             },
@@ -145,7 +145,7 @@ if AZURE_DEPLOYED:
         "staticfiles": {
             "BACKEND": "storages.backends.azure_storage.AzureStorage",
             "OPTIONS": {
-                "account_name": os.getenv('AZURE_ACCOUNT_NAME'),
+                "account_name": os.getenv('AZURE_STORAGE_ACCOUNT_NAME'),
                 "account_key": os.getenv('AZURE_ACCOUNT_KEY'),
                 "azure_container": "static"  # Static files here
             },
