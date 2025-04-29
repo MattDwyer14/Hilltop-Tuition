@@ -1,54 +1,3 @@
-# .github/workflows/deploy.yml
-name: Build and deploy – HillTop Tuition
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  id-token: write          # for azure/login
-  contents:  read          # checkout needs this
-
-jobs:
-# ──────────────────────────────── deploy ────────────────────────────────
-  deploy:
-    runs-on: ubuntu-latest
-    environment: Production
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-
-    - name: Install deps (collectstatic only)
-      run: |
-        python -m pip install --upgrade pip
-        pip  install -r requirements.txt
-
-    - name: Azure login (collectstatic)
-      uses: azure/login@v2
-      with:
-        client-id:       ${{ secrets.CLIENTID }}
-        tenant-id:       ${{ secrets.TENANTID }}
-        subscription-id: ${{ secrets.SUBSCRIPTIONID }}
-
-    - name: Collect static files
-      run: python manage.py collectstatic --noinput
-      env:
-        AZURE_DEPLOYED: 'true'
-        SECRET_KEY:                 ${{ secrets.SECRET_KEY }}
-        AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
-
-    - name: Apply database migrations
-      run: python manage.py migrate --noinput
-      env:
-        AZURE_DEPLOYED: 'true'
-        SECRET_KEY:                 ${{ secrets.SECRET_KEY }}
-        AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
 name: Build and deploy Python app to Azure Web App - MattsPortfolio
 
 on:
@@ -90,9 +39,9 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
+          AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
           AZURE_ACCOUNT_KEY: ${{ secrets.AZURE_ACCOUNT_KEY }}
-          AZURE_CONTAINER: ${{ secrets.AZURE_CONTAINER }}
+          AZURE_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
 
       - name: Run collectstatic
         run: |
@@ -105,7 +54,7 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
+          AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
           AZURE_ACCOUNT_KEY: ${{ secrets.AZURE_ACCOUNT_KEY }}
           AZURE_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
 
@@ -150,5 +99,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'MattsPortfolio'
+          app-name: 'WA-Hilltop-Tuition-27042025'
           slot-name: 'Production'
+
