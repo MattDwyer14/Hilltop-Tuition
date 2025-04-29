@@ -26,6 +26,7 @@ DEBUG = not AZURE_DEPLOYED
 if AZURE_DEPLOYED:
     ALLOWED_HOSTS = [
         "hilltoptuition.com",
+        "https://wa-hilltop-tuition-27042025-d9f9d6azbabxbdd5.uksouth-01.azurewebsites.net/",
         "www.hilltoptuition.com",
         # Azure default host:
         "hilltop-tuition-prod.azurewebsites.net",
@@ -79,6 +80,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "hilltop_tuition.wsgi.application"
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://wa-hilltop-tuition-27042025-d9f9d6azbabxbdd5.uksouth-01.azurewebsites.net/",
     "https://hilltop-tuition-prod.azurewebsites.net",
     "https://hilltoptuition.com",
 ]
