@@ -33,7 +33,7 @@ jobs:
           source venv/bin/activate
           python manage.py migrate
         env:
-          AZURE_DEPLOYMENT: 'true'
+          AZURE_DEPLOYED: 'true'
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_NAME: ${{ secrets.DB_NAME }}
