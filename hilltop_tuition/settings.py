@@ -21,15 +21,14 @@ if (BASE_DIR / ".env").exists():
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 AZURE_DEPLOYED = os.getenv("AZURE_DEPLOYED") == "true"
-DEBUG = not AZURE_DEPLOYED
+DEBUG = True #not AZURE_DEPLOYED
 
 if AZURE_DEPLOYED:
     ALLOWED_HOSTS = [
         "hilltoptuition.com",
-        "wa-hilltop-tuition-27042025-d9f9d6azbabxbdd5.uksouth-01.azurewebsites.net",
         "www.hilltoptuition.com",
         # Azure default host:
-        "hilltop-tuition-prod.azurewebsites.net",
+        "wa-hilltop-tuition-27042025-d9f9d6azbabxbdd5.uksouth-01.azurewebsites.net",
     ]
 else:
     ALLOWED_HOSTS = ["*"]
