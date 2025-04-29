@@ -130,27 +130,41 @@ DEFAULT_FROM_EMAIL  = EMAIL_HOST_USER
 
 # ─── AZURE STORAGE (static & media) ────────────────────────────────────────────
 if AZURE_DEPLOYED:
+    AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
+    AZURE_ACCOUNT_KEY  = os.getenv("AZURE_ACCOUNT_KEY")
+    AZURE_STATIC_CONTAINER = os.getenv("AZURE_STATIC_CONTAINER", "static")
+    AZURE_MEDIA_CONTAINER  = os.getenv("AZURE_MEDIA_CONTAINER",  "media")
+
     STORAGES = {
         "default": {
             "BACKEND": "storages.backends.azure_storage.AzureStorage",
             "OPTIONS": {
-                "account_name": os.getenv('AZURE_STORAGE_ACCOUNT_NAME'),
-                "account_key": os.getenv('AZURE_ACCOUNT_KEY'),
-                "azure_container": "media"  # Media files here
+                "account_name": AZURE_ACCOUNT_NAME,
+                "account_key": AZURE_ACCOUNT_KEY,
+                "azure_container": AZURE_MEDIA_CONTAINER,
             },
         },
         "staticfiles": {
             "BACKEND": "storages.backends.azure_storage.AzureStorage",
             "OPTIONS": {
-                "account_name": os.getenv('AZURE_STORAGE_ACCOUNT_NAME'),
-                "account_key": os.getenv('AZURE_ACCOUNT_KEY'),
-                "azure_container": "static"  # Static files here
+                "account_name": AZURE_ACCOUNT_NAME,
+                "account_key": AZURE_ACCOUNT_KEY,
+                "azure_container": AZURE_STATIC_CONTAINER,
             },
         },
     }
 
-    STATIC_URL = f"https://{os.getenv('AZURE_STORAGE_ACCOUNT_NAME')}.blob.core.windows.net/{os.getenv('AZURE_STATIC_CONTAINER', 'static')}/"
-    MEDIA_URL = f"https://{os.getenv('AZURE_STORAGE_ACCOUNT_NAME')}.blob.core.windows.net/{os.getenv('AZURE_MEDIA_CONTAINER', 'media')}/"
+    STATIC_URL = (
+        f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/"
+        f"{AZURE_STATIC_CONTAINER}/"
+    )
+    MEDIA_URL = (
+        f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/"
+        f"{AZURE_MEDIA_CONTAINER}/"
+    )
+
+    STATIC_URL = f"https://{os.getenv('AZURE_ACCOUNT_NAME')}.blob.core.windows.net/{os.getenv('AZURE_STATIC_CONTAINER', 'static')}/"
+    MEDIA_URL = f"https://{os.getenv('AZURE_ACCOUNT_NAME')}.blob.core.windows.net/{os.getenv('AZURE_MEDIA_CONTAINER', 'media')}/"
 
 else:
     STATIC_URL = "/static/"
