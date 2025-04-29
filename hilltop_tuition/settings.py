@@ -88,11 +88,11 @@ if AZURE_DEPLOYED:
     DATABASES = {
     'default': {
         'ENGINE'  : 'django.db.backends.postgresql',
-        'HOST'    : os.environ['DB_HOST'],
+        'HOST'    : os.getenv['DB_HOST'],
         'PORT'    : '5432',
-        'NAME'    : os.environ['DB_NAME'],
-        'USER'    : os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
+        'NAME'    : os.getenv['DB_NAME'],
+        'USER'    : os.getenv['DB_USER'],
+        'PASSWORD': os.getenv['DB_PASSWORD'],
         'OPTIONS' : {'sslmode': 'require'},
         }
     }
