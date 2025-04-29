@@ -133,26 +133,28 @@ DEFAULT_FROM_EMAIL  = EMAIL_HOST_USER
 
 # ─── AZURE STORAGE (static & media) ────────────────────────────────────────────
 if AZURE_DEPLOYED:
-    STORAGE_ACCOUNT = os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
-    credential = DefaultAzureCredential()
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+            "OPTIONS": {
+                "account_name": os.getenv('AZURE_ACCOUNT_NAME'),
+                "account_key": os.getenv('AZURE_ACCOUNT_KEY'),
+                "azure_container": "media"  # Media files here
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+            "OPTIONS": {
+                "account_name": os.getenv('AZURE_ACCOUNT_NAME'),
+                "account_key": os.getenv('AZURE_ACCOUNT_KEY'),
+                "azure_container": "static"  # Static files here
+            },
+        },
+    }
 
-    class StaticStorage(AzureStorage):
-        account_name    = STORAGE_ACCOUNT
-        credential      = credential
-        azure_container = "static"
-        expiration_secs = None
+    STATIC_URL = f"https://{os.getenv('AZURE_ACCOUNT_NAME')}.blob.core.windows.net/{os.getenv('AZURE_STATIC_CONTAINER', 'static')}/"
+    MEDIA_URL = f"https://{os.getenv('AZURE_ACCOUNT_NAME')}.blob.core.windows.net/{os.getenv('AZURE_MEDIA_CONTAINER', 'media')}/"
 
-    class MediaStorage(AzureStorage):
-        account_name    = STORAGE_ACCOUNT
-        credential      = credential
-        azure_container = "media"
-        expiration_secs = None
-
-    STATICFILES_STORAGE  = "hilltop_tuition.settings.StaticStorage"
-    DEFAULT_FILE_STORAGE = "hilltop_tuition.settings.MediaStorage"
-
-    STATIC_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/static/"
-    MEDIA_URL  = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/media/"
 else:
     STATIC_URL = "/static/"
     MEDIA_URL  = "/media/"
