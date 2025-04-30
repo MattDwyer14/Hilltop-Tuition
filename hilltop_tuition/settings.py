@@ -5,9 +5,7 @@ with static & media files on Azure Blob Storage via Managed Identity.
 
 from pathlib import Path
 import os
-import dj_database_url
 from dotenv import load_dotenv
-from azure.identity import DefaultAzureCredential
 from storages.backends.azure_storage import AzureStorage
 
 # ─── BASE ───────────────────────────────────────────────────────────────────────
@@ -98,10 +96,7 @@ if AZURE_DEPLOYED:
             'USER':     DB_USER,
             'PASSWORD': DB_PASSWORD,
             'HOST':     DB_HOST,
-            'PORT':     DB_PORT,
-            'OPTIONS':  {
-                'sslmode': 'require',
-            },
+            'PORT':     DB_PORT
         }
     }
 else:
