@@ -120,7 +120,9 @@ main {
     display: flex;
     justify-content: center;
     align-items: center; 
-    padding: 10px; 
+    padding-top: 40px; 
+    padding-bottom: 0px;
+
 }
 
 .image-entry img {
@@ -144,6 +146,9 @@ main {
     border-radius: 20px;
     color: var(--font-color);
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow-x: hidden;
+    overflow-y: visible;
+    height: auto; 
 }
 
 /* The 'track' that holds all slides side by side */
@@ -158,8 +163,9 @@ main {
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    align-items: center;
     padding: 20px;
+    overflow: visible;
+    align-items: flex-start;
 }
 
 .tutor-info {

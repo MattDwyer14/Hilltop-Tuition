@@ -175,6 +175,9 @@ else:
 
 # ─── STATIC FILES (local dev only) ────────────────────────────────────────────
 if not AZURE_DEPLOYED:
-    STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
-STATIC_ROOT = BASE_DIR / "static"
-MEDIA_ROOT  = BASE_DIR / "media"
+    # Serve app-level static directly for runserver
+    STATICFILES_DIRS = [BASE_DIR / 'home' / 'static']
+
+# Directory for collectstatic in production
+STATIC_ROOT = BASE_DIR / 'static'
+MEDIA_ROOT = BASE_DIR / 'media'
