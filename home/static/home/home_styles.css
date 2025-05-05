@@ -168,10 +168,10 @@ main {
   
   /* Tutor info box */
   .tutor-info {
-    text-align: centre;       /* British spelling ;-) */
+    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: centre;
+    align-items: center;
     gap: 10px;
   }
   
@@ -191,6 +191,11 @@ main {
   
   /* Tutor photo */
   .tutor-photo {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start;
     width: 300px;
     height: 300px;
     object-fit: cover;
@@ -255,6 +260,61 @@ main {
     border-radius: 50%;
     margin-bottom: 1rem;
 }
+
+/* ===== Reviews Section ===== */
+.reviews-section {
+    background-color: var(--secondary-color);
+    padding: 60px 20px;
+    text-align: center;           /* centre the whole section */
+  }
+  
+  .reviews-section h2 {
+    font-size: var(--main-heading);
+    color: var(--primary-color);
+    margin-bottom: 40px;
+  }
+  
+  .reviews-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  .review-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .review-text {
+    font-style: italic;
+    font-size: var(--paragraph);
+    margin-bottom: 15px;
+    color: var(--font-color);
+    overflow-wrap: anywhere;
+  }
+  
+  .review-date {
+    font-size: var(--sub-heading);
+    color: #666;
+    text-align: right;
+  }
+  
+  /* ===== Mobile tweaks for reviews ===== */
+  @media (max-width: 768px) {
+    .reviews-section {
+      padding: 40px 10px;
+    }
+    .review-card {
+      padding: 15px;
+    }
+  }
 
 /* Navigation Buttons */
 .carousel-button {

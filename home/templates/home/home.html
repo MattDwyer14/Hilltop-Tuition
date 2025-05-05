@@ -54,6 +54,24 @@
     <button class="carousel-button prev-button">&#10094;</button>
     <button class="carousel-button next-button">&#10095;</button>
 </div>
+
+<section class="reviews-section">
+    <h2>What our students and parents say:</h2>
+    <div class="reviews-container">
+      {% for review in reviews %}
+        <article class="review-card">
+          <p class="review-text">“{{ review.text }}”</p>
+          <time datetime="{{ review.created_at|date:'Y-m-d' }}"
+                class="review-date">
+            {{ review.created_at|date:"j F Y" }}
+          </time>
+        </article>
+      {% empty %}
+        <p>No reviews yet – check back soon!</p>
+      {% endfor %}
+    </div>
+  </section>
+  
 <script src="{% static 'home/script.js' %}"></script>
 
 {% endblock %}
