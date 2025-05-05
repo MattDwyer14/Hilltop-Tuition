@@ -65,7 +65,6 @@ class Tutor(models.Model):
 
 
 class Review(models.Model):
-    tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name='reviews')
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
