@@ -42,9 +42,6 @@
                 <h3>{{ tutor.name }}</h3>
                 <p>Subjects: {{ tutor.expertise_list }}</p>
                 <p>{{ tutor.summary }}</p>
-                {% if tutor.reviews.all %}
-                    <p><em>{{ tutor.reviews.all.0.text }}</em></p>
-                {% endif %}
             </div>
         </div>
         {% endfor %}
