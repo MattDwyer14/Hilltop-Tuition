@@ -55,7 +55,13 @@ class Tutor(models.Model):
         blank=True,
         verbose_name="Areas of Expertise"
     )
-
+    qualifications = models.TextField(
+        max_length=500,
+        blank=True,
+        verbose_name="Qualifications",
+        help_text="List the tutor’s qualifications (comma-separated or free text)."
+    )
+    
     def expertise_list(self):
         """Returns a comma-separated list of expertise names."""
         return ", ".join(e.name for e in self.expertise.all())

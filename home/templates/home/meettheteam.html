@@ -37,6 +37,9 @@
                 {% endif %}
                 <p>{{ tutor.about }}</p>
                 <p><strong>- Expertise:</strong> {{ tutor.expertise_list }}</p>
+                {% if tutor.qualifications %}
+                <p><strong>Qualifications:</strong> {{ tutor.qualifications_list }}</p>
+                {% endif %}
             </div>
         {% endfor %}
     </div>    
