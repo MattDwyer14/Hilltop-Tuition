@@ -27,7 +27,8 @@ if AZURE_DEPLOYED:
         "www.hilltoptuition.com",
         # Azure default host:
         "wa-hilltop-tuition-27042025-d9f9d6azbabxbdd5.uksouth-01.azurewebsites.net",
-        ".azurewebsites.net"
+        ".azurewebsites.net",
+        "169.254.131.6"
     ]
 else:
     ALLOWED_HOSTS = ["*"]
