@@ -21,17 +21,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 AZURE_DEPLOYED = os.getenv("AZURE_DEPLOYED") == "true"
 DEBUG = True #not AZURE_DEPLOYED
 
-if AZURE_DEPLOYED:
-    ALLOWED_HOSTS = [
-        "hilltoptuition.com",
-        "www.hilltoptuition.com",
-        # Azure default host:
-        "wa-hilltop-tuition-27042025-d9f9d6azbabxbdd5.uksouth-01.azurewebsites.net",
-        ".azurewebsites.net",
-        "169.254.131.6"
-    ]
-else:
-    ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*"]
 
 # ─── APPS & MIDDLEWARE ─────────────────────────────────────────────────────────
 INSTALLED_APPS = [
