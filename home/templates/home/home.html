@@ -35,10 +35,13 @@
         <!-- Each 'slide' in the carousel -->
         <div class="carousel-slide">
             <div class="tutor-info">
-                <img src="{{ tutor.image.url }}" 
+                {% if tutor.image %}
+                <img
+                    src="{{ tutor.image.url }}"
                     alt="{{ tutor.name }}"
                     class="tutor-photo"
                 />
+                {% endif %}
                 <h3>{{ tutor.name }}</h3>
                 <p>Subjects: {{ tutor.expertise_list }}</p>
                 <p>{{ tutor.summary }}</p>
