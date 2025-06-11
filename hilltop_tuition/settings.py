@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from storages.backends.azure_storage import AzureStorage
 
 # ─── BASE ───────────────────────────────────────────────────────────────────────
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load .env only for local development
 if (BASE_DIR / ".env").exists():
