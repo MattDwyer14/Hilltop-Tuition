@@ -71,8 +71,17 @@ class Tutor(models.Model):
 
 
 class Review(models.Model):
+    tutor = models.ForeignKey(
+        'Tutor',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='reviews',
+        verbose_name='Tutor'
+    )
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.text[:50]
+        tutor_name = self.tutor.name if self.tutor else "No tutor"
+        return f"{tutor_name}: {self.text[:50]}"
