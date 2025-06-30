@@ -32,7 +32,6 @@
 <div class="carousel-container">
     <div class="carousel-track">
         {% for tutor in tutors %}
-        <!-- Each 'slide' in the carousel -->
         <div class="carousel-slide">
             <div class="tutor-info">
                 {% if tutor.image %}
@@ -43,14 +42,27 @@
                 />
                 {% endif %}
                 <h3>{{ tutor.name }}</h3>
-                <h3>Subjects: {{ tutor.expertise_list }}</h3>
+                <h4>Subjects: {{ tutor.expertise_list }}</h4>
                 <p>{{ tutor.summary }}</p>
+
+                {# Average rating display #}
+                {% if tutor.average_rating %}
+                <div class="tutor-rating">
+                  <span class="avg">{{ tutor.average_rating }}/5 ★</span>
+                  <span class="count">
+                    ({{ tutor.review_count }} review{{ tutor.review_count|pluralize }})
+                  </span>
+                </div>
+                {% else %}
+                <div class="tutor-rating">
+                  <em>No ratings yet</em>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
 
-    <!-- Carousel Navigation Buttons -->
     <button class="carousel-button prev-button">&#10094;</button>
     <button class="carousel-button next-button">&#10095;</button>
 </div>
@@ -66,6 +78,24 @@
           <time datetime="{{ review.created_at|date:'Y-m-d' }}" class="review-date">
             {{ review.created_at|date:"j F Y" }}
           </time>
+
+          {# Star rating for this review #}
+          {% if review.stars %}
+          <div class="review-stars">
+            {% for i in "12345" %}
+              {% if forloop.counter <= review.stars %}
+                ★
+              {% else %}
+                ☆
+              {% endif %}
+            {% endfor %}
+            <span class="sr-only">{{ review.stars }} out of 5 stars</span>
+          </div>
+          {% else %}
+          <div class="review-stars">
+            <em>No rating</em>
+          </div>
+          {% endif %}
         </article>
       </div>
       {% endfor %}

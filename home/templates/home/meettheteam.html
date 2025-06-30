@@ -13,7 +13,7 @@
             <div id="expertise-dropdown" class="dropdown" style="display: none;">
                 {% for tise in expertise %}
                     <label class="checkbox-option">
-                        <input type="checkbox" name="expertise" value="{{ tise.name }}" 
+                        <input type="checkbox" name="expertise" value="{{ tise.name }}"
                                {% if tise.name in selected_tise %}checked{% endif %}>
                         {{ tise.name }}{% if tise.team_count %} ({{ tise.team_count }}){% endif %}
                     </label>
@@ -28,18 +28,36 @@
     <div class="team-grid">
         {% for tutor in team %}
             <div class="tutor-card">
-                <h2>{{ tutor.name }}</h2>
-                {% if tutor.image %}
-                <img src="{{ tutor.image.url }}" 
-                    alt="{{ tutor.name }}"
-                    class="tutor-photo"
-                />
-                {% endif %}
-                <p>{{ tutor.about }}</p>
-                <p><strong>- Expertise:</strong> {{ tutor.expertise_list }}</p>
-                {% if tutor.qualifications %}
-                <p><strong>Qualifications:</strong> {{ tutor.qualifications }}</p>
-                {% endif %}
+                <a href="{% url 'tutor_detail' tutor.pk %}" class="tutor-link">
+                    <h2>{{ tutor.name }}</h2>
+                    {% if tutor.image %}
+                        <img src="{{ tutor.image.url }}" 
+                             alt="{{ tutor.name }}"
+                             class="tutor-photo"
+                        />
+                    {% endif %}
+
+                    <!-- Rating block -->
+                    {% if tutor.average_rating %}
+                    <div class="tutor-rating">
+                        <span class="avg">{{ tutor.average_rating }}/5 ★</span>
+                        <span class="count">
+                            ({{ tutor.review_count }} review{{ tutor.review_count|pluralize }})
+                        </span>
+                    </div>
+                    {% else %}
+                    <div class="tutor-rating">
+                        <em>No ratings yet</em>
+                    </div>
+                    {% endif %}
+
+                    {% if tutor.qualifications %}
+                    <p><strong>Qualifications:</strong> {{ tutor.qualifications }}</p>
+                    {% endif %}
+
+                    <p><strong>Expertise:</strong> {{ tutor.expertise_list }}</p>
+                    <p>{{ tutor.about }}</p>
+                </a>
             </div>
         {% endfor %}
     </div>    

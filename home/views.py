@@ -4,6 +4,7 @@ from .forms import ContactMessageForm
 from django.contrib import messages
 from django.core.mail import send_mail
 import os
+from django.shortcuts import get_object_or_404, render
 from datetime import datetime
 
 
@@ -87,3 +88,11 @@ Submitted at: {timestamp_str}
     # Prepare a timestamp for the form (ISO format)
     timestamp = datetime.now().isoformat()
     return render(request, 'home/contact.html', {'form': form, 'timestamp': timestamp})
+
+def tutor_detail(request, pk):
+    tutor = get_object_or_404(Tutor, pk=pk)
+    reviews = tutor.reviews.order_by('-created_at')
+    return render(request, 'home/tutor_detail.html', {
+        'tutor': tutor,
+        'reviews': reviews,
+    })

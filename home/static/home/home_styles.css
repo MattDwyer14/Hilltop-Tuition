@@ -31,12 +31,12 @@ body {
 }
 
 body p {
-    font-size: var(--paragraph)
+    font-size: var(--paragraph);
 }
 
 /* Navigation Bar */
 nav {
-    background-color: var(--primary-color); /* Navy Blue */
+    background-color: var(--primary-color);
     color: var(--secondary-color);
     padding: 15px 20px;
     position: sticky;
@@ -112,21 +112,19 @@ main {
     text-align: center;
     color: var(--font-color);
     width: 70%;
-    margin: 0 auto; /* Centers horizontally */
+    margin: 0 auto;
 }
-
 
 .image-entry {
     display: flex;
     justify-content: center;
-    align-items: center; 
-    padding-top: 40px; 
+    align-items: center;
+    padding-top: 40px;
     padding-bottom: 0px;
-
 }
 
 .image-entry img {
-    width: 200px; 
+    width: 200px;
     height: 200px;
     object-fit: cover;
     border-radius: 50%;
@@ -135,28 +133,24 @@ main {
 }
 
 /* ====== Carousel Styles ====== */
-
-/* Container: clips horizontally but grows vertically */
 .carousel-container {
     position: relative;
     width: 90%;
-    margin: 20px auto;       /* centres with 5% gap either side */
+    margin: 20px auto;
     overflow-x: hidden;
     overflow-y: visible;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     height: auto;
-  }
-  
-  /* Track: holds slides side by side */
-  .carousel-track {
+}
+
+.carousel-track {
     display: flex;
     transition: transform 0.5s ease-in-out;
     height: auto;
-  }
-  
-  /* Individual slide */
-  .carousel-slide {
+}
+
+.carousel-slide {
     min-width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -164,33 +158,45 @@ main {
     align-items: flex-start;
     padding: 20px;
     height: auto;
-  }
-  
-  /* Tutor info box */
-  .tutor-info {
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-size: var(--sub-heading);
+  color: var(--primary-color);
+  text-decoration: none;        /* remove the blue underline */
+  font-weight: bold;
+}
+
+.back-link:hover {
+  color: var(--hover-color);
+  text-decoration: underline;    /* subtle underline on hover */
+}
+
+.tutor-info {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-  }
-  
-  .tutor-info h3 {
+}
+
+.tutor-info h3 {
     font-size: var(--main-heading);
     margin-bottom: 0.5rem;
     color: var(--font-color);
-  }
-  
-  .tutor-info p {
+}
+
+.tutor-info p {
     font-size: var(--paragraph);
     margin-bottom: 0.5rem;
     overflow-wrap: anywhere;
     word-wrap: break-word;
     hyphens: auto;
-  }
-  
-  /* Tutor photo */
-  .tutor-photo {
+}
+
+.tutor-photo {
     text-align: center !important;
     display: flex !important;
     flex-direction: column !important;
@@ -201,10 +207,10 @@ main {
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 1rem;
-  }
-  
-  /* Nav buttons */
-  .carousel-button {
+}
+
+/* Nav buttons */
+.carousel-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -217,36 +223,36 @@ main {
     border-radius: 5px;
     z-index: 10;
     transition: transform 0.2s ease;
-  }
-  
-  .prev-button { left: 10px; }
-  .next-button { right: 10px; }
-  
-  .carousel-button:hover {
+}
+
+.prev-button { left: 10px; }
+.next-button { right: 10px; }
+
+.carousel-button:hover {
     transform: translateY(-50%) scale(1.1);
-  }
-  
-  /* ====== Responsive tweaks ====== */
-  @media (max-width: 768px) {
+}
+
+/* ====== Responsive tweaks ====== */
+@media (max-width: 768px) {
     .carousel-container {
-      width: auto;           /* let it fill minus margins */
-      margin: 10px;          /* 10px gap around on mobile */
+        width: auto;
+        margin: 10px;
     }
     .carousel-slide {
-      padding: 10px;
+        padding: 10px;
     }
     .tutor-photo {
-      width: 150px;
-      height: 150px;
+        width: 150px;
+        height: 150px;
     }
     .tutor-info h3 {
-      font-size: 1.5rem;
+        font-size: 1.5rem;
     }
     .tutor-info p {
-      font-size: 1rem;
+        font-size: 1rem;
     }
-  }
-  
+}
+
 .tutor-info {
     text-align: center;
     font-size: var(--main-heading);
@@ -266,24 +272,24 @@ main {
 .reviews-section {
     background-color: var(--secondary-color);
     padding: 60px 20px;
-    text-align: center;           /* centre the whole section */
-  }
-  
-  .reviews-section h2 {
+    text-align: center;
+}
+
+.reviews-section h2 {
     font-size: var(--main-heading);
     color: var(--primary-color);
     margin-bottom: 40px;
-  }
-  
-  .reviews-container {
+}
+
+.reviews-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     width: 90%;
     margin: 0 auto;
-  }
-  
-  .review-card {
+}
+
+.review-card {
     background: #fff;
     padding: 20px;
     border-radius: 12px;
@@ -291,43 +297,35 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-  
-  .review-text {
+}
+
+.review-text {
     font-style: italic;
     font-size: var(--paragraph);
     margin-bottom: 15px;
     color: var(--font-color);
     overflow-wrap: anywhere;
-  }
-  
-  .review-date {
+}
+
+.review-date {
     font-size: var(--sub-heading);
     color: #666;
     text-align: right;
-  }
-  
-  /* ===== Mobile tweaks for reviews ===== */
-  @media (max-width: 768px) {
+}
+
+/* ===== Mobile tweaks for reviews ===== */
+@media (max-width: 768px) {
     .reviews-section {
-      padding: 40px 10px;
+        padding: 40px 10px;
     }
     .review-card {
-      padding: 15px;
+        padding: 15px;
     }
-  }
+}
 
-/* Navigation Buttons */
+/* Navigation Buttons (duplicate cleaned up) */
 .carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     color: var(--font-color);
-    border: none;
-    font-size: 2rem;
-    padding: 0.4rem 1rem;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
 .prev-button {
@@ -338,10 +336,7 @@ main {
     right: 10px;
 }
 
-.carousel-button:hover {
-    transition: transform 0.2s ease;
-}
-
+/* Marquee */
 .marquee-container {
     position: relative;
     width: 70%;
@@ -374,12 +369,8 @@ main {
 }
 
 @keyframes scroll {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-100%);
-    }
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
 }
 
 /* Fading effect */
@@ -404,10 +395,9 @@ main {
     background: linear-gradient(to left, white, transparent);
 }
 
-
 /* Footer Styling */
 footer {
-    background-color: #001f3f; /* Navy Blue */
+    background-color: var(--primary-color);
     color: #fff;
     text-align: center;
     padding: 15px 20px;
@@ -431,7 +421,6 @@ footer {
     color: var(--primary-color);
 }
 
-/* Contact Form Container */
 .contact-container {
     background-color: var(--secondary-color);
     padding: 30px;
@@ -442,7 +431,6 @@ footer {
     margin: 0 auto;
 }
 
-/* Form Layout and Input Styling */
 .contact-container form {
     display: flex;
     flex-direction: column;
@@ -470,7 +458,6 @@ footer {
     min-height: 100px;
 }
 
-/* Submit Button */
 .contact-container form button {
     padding: 12px;
     background-color: var(--primary-color);
@@ -486,7 +473,6 @@ footer {
     background-color: var(--hover-color);
 }
 
-/* Contact Links */
 .contact-links {
     margin-top: 20px;
     text-align: center;
@@ -494,9 +480,8 @@ footer {
 }
 
 /* Meet the Team Page Container */
-/* Ensure the Meet The Team container spans full width on all devices */
 .meet-the-team-container {
-    width: 100%; /* change from max-content to full width */
+    width: 100%;
     text-align: center;
     padding-top: 30px;
     background-color: var(--secondary-color);
@@ -505,8 +490,8 @@ footer {
 /* Constrain the cards to the central 80% on desktop/laptop only */
 @media (min-width: 769px) {
     .team-grid {
-        width: 80%;       /* central 80% width */
-        margin: 0 auto;   /* center horizontally */
+        width: 80%;
+        margin: 0 auto;
     }
 }
 
@@ -635,22 +620,19 @@ footer {
 
 /* For Mobile Devices */
 @media (max-width: 768px) {
-    /* Show Hamburger Menu */
     .hamburger {
         display: flex;
     }
 
-    /* Hide Navigation Links by Default */
     .nav-link {
         display: none;
         flex-direction: column;
         width: 100%;
-        background-color: #001f3f;
+        background-color: var(--primary-color);
         margin-top: 10px;
         border-top: 1px solid #fff;
     }
 
-    /* Show Navigation Links When Toggled */
     .nav-link.show {
         display: flex;
     }
@@ -660,4 +642,94 @@ footer {
         text-align: center;
         border-bottom: 1px solid #fff;
     }
+}
+
+/* -----------------------------------------------------------------------------
+   Additional consistency tweaks for new detail & card layouts
+   --------------------------------------------------------------------------- */
+
+/* 1) Make tutor cards into whole-card links */
+.tutor-card .tutor-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 2) Align heading sizes inside tutor cards */
+.tutor-card h2 {
+  font-size: var(--sub-heading);
+  margin-bottom: 0.75rem;
+  color: var(--primary-color);
+}
+
+/* 3) Style the star-rating block uniformly */
+.tutor-rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  font-size: var(--paragraph);
+}
+
+.tutor-rating .avg {
+  font-weight: bold;
+}
+
+.tutor-rating .count {
+  color: #555;
+}
+
+/* 4) Meet-the-team grid adjustments */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* 5) Tutor-detail page container & image */
+.tutor-detail {
+  width: 90%;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.tutor-image-container {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.tutor-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* 6) Review-list on detail page */
+.review-card-detail {
+  background-color: var(--secondary-color);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.review-card-detail .review-text {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.review-stars {
+  font-size: var(--paragraph);
+  margin-top: 0.5rem;
+  color: var(--primary-color);
+}
+
+/* 7) Fallback “no rating” style */
+.no-rating {
+  font-style: italic;
+  color: #777;
 }

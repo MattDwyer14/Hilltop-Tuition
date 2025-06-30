@@ -1,0 +1,69 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="tutor-detail">
+  <a href="{% url 'meettheteam' %}" class="back-link">&larr; Back to team</a>
+
+  <h1 class="tutor-name">{{ tutor.name }}</h1>
+
+  {% if tutor.image %}
+  <div class="tutor-image-container">
+    <img src="{{ tutor.image.url }}" alt="{{ tutor.name }}" class="tutor-image" />
+  </div>
+  {% endif %}
+
+  <div class="tutor-info">
+    <p><strong>Joined:</strong> {{ tutor.created|date:"j F Y" }}</p>
+    <p><strong>Expertise:</strong> {{ tutor.expertise_list }}</p>
+    {% if tutor.qualifications %}
+    <p><strong>Qualifications:</strong> {{ tutor.qualifications }}</p>
+    {% endif %}
+    {% if tutor.about %}
+    <div class="tutor-about">
+      {{ tutor.about|linebreaks }}
+    </div>
+    {% endif %}
+
+    <div class="tutor-rating">
+      {% if tutor.average_rating %}
+      <span class="avg">{{ tutor.average_rating }}/5 ★</span>
+      <span class="count">({{ tutor.review_count }} review{{ tutor.review_count|pluralize }})</span>
+      {% else %}
+      <span class="no-rating"><em>No ratings yet</em></span>
+      {% endif %}
+    </div>
+  </div>
+
+  <hr />
+
+  <section class="tutor-reviews">
+    <h2>Reviews</h2>
+    {% if reviews %}
+      {% for review in reviews %}
+      <article class="review-card-detail">
+        <p class="review-text">“{{ review.text }}”</p>
+        <time datetime="{{ review.created_at|date:'Y-m-d' }}">{{ review.created_at|date:"j F Y" }}</time>
+        <div class="review-stars">
+          {% if review.stars %}
+            {% for i in "12345" %}
+              {% if forloop.counter <= review.stars %}
+                ★
+              {% else %}
+                ☆
+              {% endif %}
+            {% endfor %}
+            <span class="sr-only">{{ review.stars }}/5 stars</span>
+          {% else %}
+            <em>No rating</em>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    {% else %}
+      <p><em>No reviews yet.</em></p>
+    {% endif %}
+  </section>
+</div>
+
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.db.models import Avg
 
 class ContactMessage(models.Model):
     LEVEL_CHOICES = [
@@ -61,6 +62,22 @@ class Tutor(models.Model):
         verbose_name="Qualifications",
         help_text="List the tutor’s qualifications (comma-separated or free text)."
     )
+
+    @property
+    def average_rating(self):
+        """
+        Returns the average of all non-null star ratings, rounded to one decimal.
+        If no ratings exist, returns None.
+        """
+        agg = self.reviews.filter(stars__isnull=False).aggregate(avg=Avg('stars'))
+        if agg['avg'] is None:
+            return None
+        return round(agg['avg'], 1)
+
+    @property
+    def review_count(self):
+        """How many reviews have a star rating."""
+        return self.reviews.filter(stars__isnull=False).count()
     
     def expertise_list(self):
         """Returns a comma-separated list of expertise names."""
@@ -70,18 +87,27 @@ class Tutor(models.Model):
         return self.name
 
 
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 class Review(models.Model):
     tutor = models.ForeignKey(
         'Tutor',
         on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        null=True, blank=True,
         related_name='reviews',
         verbose_name='Tutor'
     )
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    stars = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text='Rating from 1 (worst) to 5 (best)'
+    )
+
     def __str__(self):
         tutor_name = self.tutor.name if self.tutor else "No tutor"
-        return f"{tutor_name}: {self.text[:50]}"
+        stars_display = f" – {self.stars}★" if self.stars else ""
+        return f"{tutor_name}{stars_display}: {self.text[:50]}"
