@@ -24,7 +24,7 @@
       {{ tutor.about|linebreaks }}
     </div>
     {% endif %}
-
+    <a href="{% url 'contact' %}" class="back-link">Make an Enquiry</a>
     <div class="tutor-rating">
       {% if tutor.average_rating %}
       <span class="avg">{{ tutor.average_rating }}/5 ★</span>

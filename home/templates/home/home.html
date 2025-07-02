@@ -33,7 +33,8 @@
     <div class="carousel-track">
         {% for tutor in tutors %}
         <div class="carousel-slide">
-            <div class="tutor-info">
+          <div class="tutor-info">
+              <a href="{% url 'tutor_detail' tutor.pk %}" class="tutor-link">
                 {% if tutor.image %}
                 <img
                     src="{{ tutor.image.url }}"
@@ -41,8 +42,8 @@
                     class="tutor-photo"
                 />
                 {% endif %}
-                <h3>{{ tutor.name }}</h3>
-                <h4>Subjects: {{ tutor.expertise_list }}</h4>
+                <h4>{{ tutor.name }}</h4>
+                <h3>Subjects: {{ tutor.expertise_list }}</h3>
                 <p>{{ tutor.summary }}</p>
 
                 {# Average rating display #}
@@ -58,6 +59,7 @@
                   <em>No ratings yet</em>
                 </div>
                 {% endif %}
+              </a>
             </div>
         </div>
         {% endfor %}
