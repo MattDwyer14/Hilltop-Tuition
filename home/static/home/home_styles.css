@@ -655,6 +655,14 @@ footer {
   color: inherit;
 }
 
+.carousel-container .carousel-slide a.tutor-link,
+.carousel-container .carousel-slide a.tutor-link:visited,
+.carousel-container .carousel-slide a.tutor-link:hover,
+.carousel-container .carousel-slide a.tutor-link:active {
+  text-decoration: none !important;
+  color: inherit       !important;
+}
+
 /* 2) Align heading sizes inside tutor cards */
 .tutor-card h2 {
   font-size: var(--sub-heading);
