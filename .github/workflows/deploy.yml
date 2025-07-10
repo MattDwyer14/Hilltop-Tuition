@@ -57,8 +57,8 @@ jobs:
           DB_USER:        ${{ secrets.DB_USER }}
           DB_PASSWORD:    ${{ secrets.DB_PASSWORD }}
           AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
-          AZURE_ACCOUNT_KEY:  ${{ secrets.AZURE_ACCOUNT_KEY }}
           AZURE_STATIC_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
+          AZURE_MEDIA_CONTAINER: ${{ secrets.AZURE_MEDIA_CONTAINER }}
         run: |
           source venv/bin/activate
           python manage.py collectstatic --noinput
