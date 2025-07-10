@@ -128,7 +128,7 @@ if AZURE_DEPLOYED:
     AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
     AZURE_ACCOUNT_KEY  = os.getenv("AZURE_ACCOUNT_KEY")
     AZURE_STATIC_CONTAINER = os.getenv("AZURE_STATIC_CONTAINER", "static")
-    AZURE_MEDIA_CONTAINER  = os.getenv("AZURE_MEDIA_CONTAINER",  "media")
+    AZURE_MEDIA_CONTAINER  = os.getenv("AZURE_MEDIA_CONTAINER",  "media") 
 
     STORAGES = {
         "default": {
