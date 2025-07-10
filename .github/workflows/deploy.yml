@@ -101,3 +101,4 @@ jobs:
         with:
           app-name:   'WA-Hilltop-Tuition-27042025'
           slot-name:  'Production'
+          startup-command: 'gunicorn hilltop_tuition.wsgi'
