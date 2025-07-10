@@ -6,19 +6,24 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  id-token: write     # needed for OIDC login
+  contents: read      # to clone your repo
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Python version
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Create and start virtual environment
+      - name: Create and activate virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
@@ -27,41 +32,41 @@ jobs:
         run: |
           source venv/bin/activate
           pip install -r requirements.txt
-      
+
       - name: Run database migrations
+        env:
+          AZURE_DEPLOYED: 'True'
+          SECRET_KEY:     ${{ secrets.SECRET_KEY }}
+          DB_HOST:        ${{ secrets.DB_HOST }}
+          DB_NAME:        ${{ secrets.DB_NAME }}
+          DB_USER:        ${{ secrets.DB_USER }}
+          DB_PASSWORD:    ${{ secrets.DB_PASSWORD }}
+          AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
+          AZURE_ACCOUNT_KEY:  ${{ secrets.AZURE_ACCOUNT_KEY }}
+          AZURE_STATIC_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
         run: |
           source venv/bin/activate
           python manage.py migrate
+
+      - name: Collect static files
         env:
           AZURE_DEPLOYED: 'True'
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SECRET_KEY:     ${{ secrets.SECRET_KEY }}
+          DB_HOST:        ${{ secrets.DB_HOST }}
+          DB_NAME:        ${{ secrets.DB_NAME }}
+          DB_USER:        ${{ secrets.DB_USER }}
+          DB_PASSWORD:    ${{ secrets.DB_PASSWORD }}
           AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
-          AZURE_ACCOUNT_KEY: ${{ secrets.AZURE_ACCOUNT_KEY }}
-          AZURE_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
-
-      - name: Run collectstatic
+          AZURE_ACCOUNT_KEY:  ${{ secrets.AZURE_ACCOUNT_KEY }}
+          AZURE_STATIC_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
         run: |
           source venv/bin/activate
           python manage.py collectstatic --noinput
-        env:
-          AZURE_DEPLOYED: 'true'
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          AZURE_ACCOUNT_NAME: ${{ secrets.AZURE_ACCOUNT_NAME }}
-          AZURE_ACCOUNT_KEY: ${{ secrets.AZURE_ACCOUNT_KEY }}
-          AZURE_CONTAINER: ${{ secrets.AZURE_STATIC_CONTAINER }}
 
-      - name: Zip artifact for deployment
+      - name: Zip artifact
         run: zip release.zip ./* -r
 
-      - name: Upload artifact for deployment jobs
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: python-app
@@ -72,33 +77,27 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write
+    environment: Production
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: python-app
 
-      - name: Unzip artifact for deployment
+      - name: Unzip artifact
         run: unzip release.zip
 
-      - name: Login to Azure via OIDC
+      - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
-          auth-type: oidc
-          client-id: ${{ secrets.CLIENTID }}
-          tenant-id: ${{ secrets.TENANTID }}
+          client-id:       ${{ secrets.CLIENTID }}
+          tenant-id:       ${{ secrets.TENANTID }}
           subscription-id: ${{ secrets.SUBSCRIPTIONID }}
 
-
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'WA-Hilltop-Tuition-27042025'
-          slot-name: 'Production'
+          app-name:   'WA-Hilltop-Tuition-27042025'
+          slot-name:  'Production'
