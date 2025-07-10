@@ -87,13 +87,14 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      - name: Login to Azure
+      - name: Login to Azure via OIDC
         uses: azure/login@v2
         with:
+          auth-type: oidc
           client-id: ${{ secrets.CLIENTID }}
           tenant-id: ${{ secrets.TENANTID }}
           subscription-id: ${{ secrets.SUBSCRIPTIONID }}
-          federated-token: ${{ secrets.GITHUB_TOKEN }}
+
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
